@@ -17,6 +17,7 @@
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.34.1",
+    "rimraf": "^5.0.5",
     "seria": "0.1.2",
     "typescript": "^5.4.2"
   },
