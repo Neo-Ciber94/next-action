@@ -3,7 +3,9 @@
   "version": "0.0.1-beta1",
   "scripts": {
     "build": "npx rimraf dist && tsc",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "prepublish": "pnpm run typecheck && pnpm run build"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",
