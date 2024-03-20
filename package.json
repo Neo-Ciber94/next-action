@@ -1,0 +1,63 @@
+{
+  "name": "next-action",
+  "version": "0.1.0-beta1",
+  "scripts": {
+    "build": "npx rimraf dist && tsc",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.34.1",
+    "seria": "0.1.2",
+    "typescript": "^5.4.2"
+  },
+  "peerDependencies": {
+    "next": "14.1.0",
+    "react": "^18.2.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "default": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client.js",
+      "default": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "default": "./dist/utils.js",
+      "types": "./dist/utils.d.ts"
+    },
+    "./testing/server": {
+      "import": "./dist/testing/server.js",
+      "default": "./dist/testing/server.js",
+      "types": "./dist/testing/server.d.ts"
+    },
+    "./testing/client": {
+      "import": "./dist/testing/client.js",
+      "default": "./dist/testing/client.js",
+      "types": "./dist/testing/client.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "./package.json"
+  ]
+}
