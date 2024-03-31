@@ -1,6 +1,4 @@
-/** @type {import("eslint").Linter.Config} */
-const config = {
-  root: true,
+module.exports = {
   env: {
     browser: true,
     es2021: true,
@@ -8,23 +6,33 @@ const config = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
   ],
   overrides: [
     {
+      env: {
+        node: true,
+      },
       files: [".eslintrc.{js,cjs}"],
+      parserOptions: {
+        sourceType: "script",
+      },
     },
   ],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json"],
+    project: ["./packages/**/tsconfig.json"],
   },
-  ignorePatterns: ["**/dist"],
-  plugins: ["react"],
+  plugins: ["@typescript-eslint", "react"],
   rules: {
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/consistent-type-imports": "error",
@@ -39,5 +47,3 @@ const config = {
     ],
   },
 };
-
-module.exports = config;
