@@ -51,7 +51,7 @@ export const authAction = createServerActionProvider({
 
 ```ts
 // lib/actions/users.tsx
-'use server';
+"use server";
 
 export const createUser = authAction(
   async ({ input }) => {
@@ -65,26 +65,23 @@ export const createUser = authAction(
       email: z.string(),
       username: z.string(),
     }),
-  }
+  },
 );
 ```
 
 ```ts
 // app/users.tsx
-'use client';
+"use client";
 function CreateUser() {
-  const { execute, isExecuting, isError, isSuccess, data, error } = useAction(
-    createUser,
-    {
-      onSuccess(data) {
-        //
-      },
-      onError(err) {
-        //
-      },
-      onSettled(result) {},
-    }
-  );
+  const { execute, isExecuting, isError, isSuccess, data, error } = useAction(createUser, {
+    onSuccess(data) {
+      //
+    },
+    onError(err) {
+      //
+    },
+    onSettled(result) {},
+  });
 
   //
 }
@@ -93,7 +90,7 @@ function CreateUser() {
 `next-action` Can also be used with forms
 
 ```ts
-'use server';
+"use server";
 
 export const updateUser = authAction.formAction(
   async ({ input }) => {
@@ -105,7 +102,7 @@ export const updateUser = authAction.formAction(
       email: z.string(),
       username: z.string(),
     }),
-  }
+  },
 );
 ```
 
@@ -122,18 +119,20 @@ export function UpdateUserPage() {
 ```
 
 If you want to get feedback from your `formAction` use the `useFormAction` hook.
+
 ```ts
-const [action, { isExecuting, isSuccess, isError, error, data, status }] = useFormAction(updateUser, {
+const [action, { isExecuting, isSuccess, isError, error, data, status }] = useFormAction(
+  updateUser,
+  {
     onSuccess(data) {
-        //
+      //
     },
     onError(error) {
-        //
+      //
     },
-    onSettled(result) {
-
-    }
-});
+    onSettled(result) {},
+  },
+);
 ```
 
 In case is needed you can call your formAction in a typed manner using the `action` method, `updateUser.action(...)`.
@@ -155,18 +154,19 @@ export const POST = handler;
 > You should set the `EXPOSE_SERVER_ACTIONS` environment variable to expose the endpoint.
 
 And on your testing side
+
 ```ts
 import { createServerActionClient } from "next-action/testing/client";
 
 beforeAll(() => {
-    // Start your nextjs serer
-})
+  // Start your nextjs serer
+});
 
 test("Should create user", async () => {
-    const client = createServerActionClient<TestActions>("http://localhost:3000/api/testactions");
-    const result = await client.createUser({ email: "test@test.com", username: "test" });
-    expect(result.success).toBeTruthy();
-})
+  const client = createServerActionClient<TestActions>("http://localhost:3000/api/testactions");
+  const result = await client.createUser({ email: "test@test.com", username: "test" });
+  expect(result.success).toBeTruthy();
+});
 ```
 
 ## See also

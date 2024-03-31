@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ActionRecord } from "./server";
-import { encodeToFormData } from "seria/form-data";
+import { encodeAsync } from "seria/form-data";
 import { parse } from "seria";
 
 type CreateActionClientOptions = {
@@ -22,7 +22,7 @@ ActionResponse<T> = {
 
 export function createServerActionClient<T extends ActionRecord>(
   url: string,
-  opts?: CreateActionClientOptions
+  opts?: CreateActionClientOptions,
 ) {
   const { cookies } = opts || {};
   const headers = new Headers();
@@ -31,7 +31,7 @@ export function createServerActionClient<T extends ActionRecord>(
     for (const [cookieName, cookieValue] of Object.entries(cookies)) {
       headers.append(
         "COOKIE",
-        `${encodeURIComponent(cookieName)}=${encodeURIComponent(cookieValue)}`
+        `${encodeURIComponent(cookieName)}=${encodeURIComponent(cookieValue)}`,
       );
     }
   }
@@ -41,7 +41,7 @@ export function createServerActionClient<T extends ActionRecord>(
     {
       get(_, path) {
         return async function (...args: any[]) {
-          const formData = await encodeToFormData(args);
+          const formData = await encodeAsync(args);
           const endpoint = `${url}/${String(path)}`;
           const res = await fetch(endpoint, {
             method: "POST",
@@ -49,13 +49,13 @@ export function createServerActionClient<T extends ActionRecord>(
             headers,
           });
 
+          const isJson = res.headers.get("content-type") === "application/json";
+
           if (!res.ok) {
-            if (res.headers.get("content-type") === "application/json") {
+            if (isJson) {
               const err = await res.json();
               const message =
-                typeof err?.message === "string"
-                  ? err.message
-                  : "Something went wrong";
+                typeof err?.message === "string" ? err.message : "Something went wrong";
 
               throw new Error(message);
             } else {
@@ -65,11 +65,11 @@ export function createServerActionClient<T extends ActionRecord>(
             }
           }
 
-          const json = await res.json();
+          const json = await res.text();
           const value = parse(json);
           return value;
         };
       },
-    }
+    },
   ) as ServerActionClient<T>;
 }

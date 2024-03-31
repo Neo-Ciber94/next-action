@@ -37,7 +37,7 @@ type ActionOptions<TResult, TError> = {
  */
 export function useAction<T, TResult, TError = unknown>(
   fn: Action<T, TResult, TError>,
-  options?: ActionOptions<TResult, TError>
+  options?: ActionOptions<TResult, TError>,
 ) {
   type TArgs = Parameters<typeof fn>;
 
@@ -66,7 +66,7 @@ export function useAction<T, TResult, TError = unknown>(
         setIsExecuting(false);
       }
     },
-    [fn, onError, onSuccess]
+    [fn, onError, onSuccess],
   );
 
   const error = useMemo(() => {
@@ -88,9 +88,7 @@ type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
 /**
  * Represents a server action that takes a form.
  */
-export type FormAction<TResult, TError> = (
-  formData: FormData
-) => ActionResult<TResult, TError>;
+export type FormAction<TResult, TError> = (formData: FormData) => ActionResult<TResult, TError>;
 
 /**
  * Returns a hook that can call the given form action.
@@ -99,7 +97,7 @@ export type FormAction<TResult, TError> = (
  */
 export function useFormAction<TResult, TError>(
   fn: FormAction<TResult, TError>,
-  options?: ActionOptions<TResult, TError>
+  options?: ActionOptions<TResult, TError>,
 ) {
   const { onError, onSuccess, onSettled } = options || {};
   const [status, setStatus] = useState<ActionState<TResult, TError>>();
@@ -124,7 +122,7 @@ export function useFormAction<TResult, TError>(
         setIsExecuting(false);
       }
     },
-    [fn, onError, onSuccess]
+    [fn, onError, onSuccess],
   );
 
   const error = useMemo(() => {
@@ -138,8 +136,5 @@ export function useFormAction<TResult, TError>(
   const isError = useMemo(() => status && status.success === false, [status]);
   const isSuccess = useMemo(() => status && status.success === true, [status]);
 
-  return [
-    action,
-    { status, data, error, isExecuting, isSuccess, isError },
-  ] as const;
+  return [action, { status, data, error, isExecuting, isSuccess, isError }] as const;
 }

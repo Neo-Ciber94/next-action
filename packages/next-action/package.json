@@ -4,6 +4,7 @@
   "scripts": {
     "build": "tsup",
     "lint": "eslint src",
+    "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
     "prepublish": "pnpm run typecheck && pnpm run build"
   },
@@ -11,8 +12,9 @@
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "eslint": "^8.0.1",
+    "prettier": "3.2.5",
     "rimraf": "^5.0.5",
-    "seria": "0.1.2",
+    "seria": "0.1.9",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2"
   },

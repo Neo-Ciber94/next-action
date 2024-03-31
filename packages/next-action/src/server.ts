@@ -22,37 +22,31 @@ export type ActionFunction<T, TResult, TCtx> = undefined extends T
   ? (opts: { input?: T; context: TCtx }) => Promise<TResult>
   : (opts: { input: T; context: TCtx }) => Promise<TResult>;
 
-type CreateProviderContext<TContext> =
-  | { context?: void }
-  | { context: TContext };
+type CreateProviderContext<TContext> = { context?: void } | { context: TContext };
 
 /**
  * Options to create the server action provider.
  */
-export type CreateProviderOptions<TError, TContext, TCtx> =
-  CreateProviderContext<TContext> & {
-    /**
-     * When an error occured, map the error to a value. By default we map the value to a `string`.
-     * @param err The error
-     */
-    mapError?: (err: any) => TError;
+export type CreateProviderOptions<TError, TContext, TCtx> = CreateProviderContext<TContext> & {
+  /**
+   * When an error occured, map the error to a value. By default we map the value to a `string`.
+   * @param err The error
+   */
+  mapError?: (err: any) => TError;
 
-    /**
-     * Run before executing a server action.
-     */
-    onBeforeExecute?: (opts: {
-      input: unknown;
-      context: TContext;
-    }) => TCtx | void | Promise<TCtx | void>;
+  /**
+   * Run before executing a server action.
+   */
+  onBeforeExecute?: (opts: {
+    input: unknown;
+    context: TContext;
+  }) => TCtx | void | Promise<TCtx | void>;
 
-    /**
-     * Run after executing a server action.
-     */
-    onAfterExecute?: (opts: {
-      result: unknown;
-      context: TCtx;
-    }) => void | Promise<void>;
-  };
+  /**
+   * Run after executing a server action.
+   */
+  onAfterExecute?: (opts: { result: unknown; context: TCtx }) => void | Promise<void>;
+};
 
 /**
  * Represents the output of a server action, this can be either a success or failure.
@@ -65,11 +59,9 @@ export type ActionResult<TResult, TError> = Promise<
  * Create a client to create server actions.
  * @param options The options for the provider.
  */
-export function createServerActionProvider<
-  TError = unknown,
-  TContext = {},
-  TCtx = TContext,
->(options?: CreateProviderOptions<TError, TContext, TCtx>) {
+export function createServerActionProvider<TError = unknown, TContext = {}, TCtx = TContext>(
+  options?: CreateProviderOptions<TError, TContext, TCtx>,
+) {
   type TNextContext = void extends TCtx ? TContext : TCtx;
 
   const {
@@ -88,7 +80,7 @@ export function createServerActionProvider<
    */
   function action<T = void, TResult = any>(
     fn: ActionFunction<T, TResult, TNextContext>,
-    actionOptions?: ActionOptions<T>
+    actionOptions?: ActionOptions<T>,
   ) {
     return async function (input: T): ActionResult<TResult, TError> {
       const { validator = { parse: identity } } = actionOptions || {};
@@ -140,11 +132,11 @@ export function createServerActionProvider<
    */
   function formAction<T = void, TResult = void>(
     fn: (opts: { input: T; context: TCtx }) => Promise<TResult>,
-    actionOptions?: ActionOptions<T>
+    actionOptions?: ActionOptions<T>,
   ) {
     const baseAction = action<T, TResult>(
       fn as ActionFunction<T, TResult, TNextContext>,
-      actionOptions
+      actionOptions,
     );
 
     async function innerFormAction(formData: FormData) {

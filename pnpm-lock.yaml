@@ -17,6 +17,9 @@ importers:
       eslint-plugin-react:
         specifier: ^7.34.1
         version: 7.34.1(eslint@8.57.0)
+      prettier:
+        specifier: 3.2.5
+        version: 3.2.5
 
   packages/next-action:
     dependencies:
@@ -36,12 +39,15 @@ importers:
       eslint:
         specifier: ^8.0.1
         version: 8.57.0
+      prettier:
+        specifier: 3.2.5
+        version: 3.2.5
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
       seria:
-        specifier: 0.1.2
-        version: 0.1.2
+        specifier: 0.1.9
+        version: 0.1.9
       tsup:
         specifier: ^8.0.2
         version: 8.0.2(typescript@5.4.3)
@@ -2352,6 +2358,12 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
     dependencies:
@@ -2528,8 +2540,8 @@ packages:
       lru-cache: 6.0.0
     dev: true
 
-  /seria@0.1.2:
-    resolution: {integrity: sha512-FaL620ZOk2AZ9TkLSuSIY5lklQosDF3NrYJoU+EvyNqKUYw4kPuYiU8kvQB4rQMV/vi8zyFZpguf0Hwr4iHeiw==}
+  /seria@0.1.9:
+    resolution: {integrity: sha512-fKbIHwd3ynna7u+3wsBCZ6xccq6PJgK3hsExfO9IID74QGqVaKeZfW3Xpr20YXnEVunTbK1AelAOekAikV8XdA==}
     dev: true
 
   /set-function-length@1.2.2:
