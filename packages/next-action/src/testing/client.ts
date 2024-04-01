@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ActionRecord } from "./server";
 import { encodeAsync } from "seria/form-data";
-import { parse } from "seria";
+import { parseFromStream } from "seria";
 
 type CreateActionClientOptions = {
   cookies: Record<string, string>;
@@ -10,15 +10,6 @@ type CreateActionClientOptions = {
 type ServerActionClient<T extends ActionRecord> = {
   [K in keyof T]: (...args: Parameters<T[K]>) => ReturnType<T[K]>;
 };
-
-/*
-
-ActionResponse<T> = {
-  json() => Promise<T>,
-  headers: () => Headers,
-  cookies: () => Record<string, string>
-}
-*/
 
 export function createServerActionClient<T extends ActionRecord>(
   url: string,
@@ -49,25 +40,32 @@ export function createServerActionClient<T extends ActionRecord>(
             headers,
           });
 
-          const isJson = res.headers.get("content-type") === "application/json";
-
           if (!res.ok) {
-            if (isJson) {
-              const err = await res.json();
-              const message =
-                typeof err?.message === "string" ? err.message : "Something went wrong";
+            const isJson = res.headers.get("content-type") === "application/json";
+            const isActionError = res.headers.get("x-server-action-error");
+            const contents = await res.text();
 
+            if (isJson) {
+              const err = JSON.parse(contents);
+              const message =
+                isActionError && typeof err?.message === "string"
+                  ? err.message
+                  : "Something went wrong";
               throw new Error(message);
             } else {
-              const err = await res.text();
-              console.error(err);
+              console.error(contents);
               throw new Error("Unexpected error");
             }
           }
 
-          const json = await res.text();
-          const value = parse(json);
-          return value;
+          const stream = res.body?.pipeThrough(new TextDecoderStream());
+
+          if (!stream) {
+            throw new Error("Response body is empty");
+          }
+
+          const value = await parseFromStream(stream);
+          return value as T;
         };
       },
     },

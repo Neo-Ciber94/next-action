@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { decode } from "seria/form-data";
-import { stringifyAsync } from "seria";
+import { stringifyToStream } from "seria";
+import { ActionError } from "..";
 
 export type ActionRecord = {
   [key: string]: (...args: any[]) => Promise<unknown>;
@@ -37,11 +38,29 @@ export function exposeServerActions<T extends ActionRecord>(actions: T) {
       }
 
       const ret = await action(...input);
-      const jsonString = await stringifyAsync(ret);
-      return json(jsonString);
+      const stream = stringifyToStream(ret);
+      return new Response(stream, {
+        headers: {
+          Connection: "Keep-Alive",
+          "cache-control": "no-store",
+        },
+      });
     } catch (err) {
       console.error(err);
-      return json({ message: "Server action call failed" }, { status: 400 });
+
+      if (err instanceof ActionError) {
+        return json(
+          { message: err.message },
+          {
+            status: 400,
+            headers: {
+              "x-server-action-error": "1",
+            },
+          },
+        );
+      }
+
+      return json({ message: "Server action call failed" }, { status: 500 });
     }
   };
 
