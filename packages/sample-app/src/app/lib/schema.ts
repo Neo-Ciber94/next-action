@@ -2,18 +2,18 @@ import {
   object,
   string,
   boolean,
-  Output,
   optional,
   date,
   instance,
   picklist,
   toTrimmed,
-  mimeType,
-  BaseSchema,
   parse as valibotParse,
+  type BaseSchema,
+  type Output,
 } from "valibot";
 
 if (!globalThis.File) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   globalThis.File = require("node:buffer").File;
 }
 
@@ -24,7 +24,7 @@ export const CreateWatchMediaSchema = object({
   releaseDate: date(),
   genres: instance(Set<string>),
   notes: optional(string([toTrimmed()])),
-  image: instance(File, [mimeType(["image/*"])]),
+  image: instance(FormData),
 });
 
 export const DeleteWatchMediaSchema = object({
@@ -36,9 +36,9 @@ export const ToggleWatchMediaSchema = object({
   watched: boolean(),
 });
 
-export type CreateMedia = Output<typeof CreateWatchMediaSchema>;
+export type CreateWatchMedia = Output<typeof CreateWatchMediaSchema>;
 
-export type WatchMedia = Omit<CreateMedia, "image"> & { id: string; imageUrl: string };
+export type WatchMedia = Omit<CreateWatchMedia, "image"> & { id: string; imageUrl: string };
 
 export function $valibot<S extends BaseSchema>(schema: S) {
   return {

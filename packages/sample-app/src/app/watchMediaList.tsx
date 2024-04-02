@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { deleteWatchMedia, toggleWatched, createWatchMedia } from "@/app/lib/api";
-import { WatchMedia, CreateMedia } from "@/app/lib/schema";
+import type { WatchMedia, CreateWatchMedia } from "@/app/lib/schema";
 
 const today = new Date();
 
-const DEFAULT: Partial<CreateMedia> = {
+const DEFAULT: Partial<CreateWatchMedia> = {
   title: "",
   releaseDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
   genres: new Set(),
@@ -16,7 +16,7 @@ const DEFAULT: Partial<CreateMedia> = {
 };
 
 export default function WatchMediaList({ watchMediaList }: { watchMediaList: WatchMedia[] }) {
-  const [watchMedia, setWatchMedia] = useState<Partial<CreateMedia>>(() =>
+  const [watchMedia, setWatchMedia] = useState<Partial<CreateWatchMedia>>(() =>
     structuredClone(DEFAULT),
   );
   const [error, setError] = useState<string>();
@@ -26,7 +26,11 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
     if (files && files[0]) {
       setWatchMedia((prevWatchMedia) => ({
         ...prevWatchMedia,
-        image: files[0],
+        image: (() => {
+          const f = new FormData();
+          f.set("image", files[0]);
+          return f;
+        })(),
       }));
     }
   };
@@ -36,8 +40,7 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
     setError(undefined);
 
     try {
-      console.log(watchMedia);
-      const result = await createWatchMedia(watchMedia as CreateMedia);
+      const result = await createWatchMedia(watchMedia as CreateWatchMedia);
 
       console.log(result);
       if (result.success) {
@@ -95,12 +98,12 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
                 onChange={(e) => {
                   setWatchMedia((prev) => ({
                     ...prev,
-                    type: e.target.value as CreateMedia["type"],
+                    type: e.target.value as CreateWatchMedia["type"],
                   }));
                 }}
               >
                 <option value="movie">Movie</option>
-                <option value="serie">Serie</option>
+                <option value="series">Serie</option>
               </select>
             </div>
             <div>
@@ -110,7 +113,6 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
                 accept="image/*"
                 onChange={handleImageChange}
                 className="block w-full p-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                required
               />
             </div>
             <div>
@@ -147,35 +149,59 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
           {watchMediaList.length === 0 && (
             <h1 className="text-center p-4 text-2xl text-neutral-500/20">Nothing here</h1>
           )}
-          <ul>
+          <ul className="flex flex-col gap-2">
             {watchMediaList.map((media) => (
-              <li key={media.id} className="mb-2">
-                <div className="card">
-                  <img src={media.imageUrl} alt={media.title} />
-                  <div>{media.title}</div>
-                  <div>{media.releaseDate.toDateString()}</div>
-                  <div>{media.type}</div>
-                  <div>{media.notes}</div>
+              <li key={media.id} className="shadow border-gray-200 p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex flex-row gap-4">
+                    <img
+                      src={media.imageUrl}
+                      alt={media.title}
+                      className="w-28 h-28 rounded-md object-cover"
+                    />
+                    <div className="flex flex-col">
+                      <p>
+                        <span className="font-semibold">Title:</span>{" "}
+                        <span className="text-neutral-500">{media.title}</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold">Release Date:</span>{" "}
+                        <span className="text-neutral-500">{media.releaseDate.toDateString()}</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold">Type:</span>{" "}
+                        <span className="text-neutral-500">{media.type}</span>
+                      </p>
+                      <p>
+                        <span className="font-semibold">Notes:</span>{" "}
+                        <span className="text-neutral-500">{media.notes}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <form action={deleteWatchMedia}>
+                      <input type="hidden" name="mediaId" value={media.id} />
+                      <button
+                        type="submit"
+                        className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded min-w-36"
+                      >
+                        Delete
+                      </button>
+                    </form>
+                    <button
+                      className={`mt-4 min-w-36 text-white font-semibold py-2 px-4 rounded ${
+                        media.watched
+                          ? "bg-gray-500 hover:bg-gray-700"
+                          : "bg-green-500 hover:bg-green-700"
+                      }`}
+                      onClick={async () => {
+                        await toggleWatched({ mediaId: media.id, watched: !media.watched });
+                      }}
+                    >
+                      {media.watched ? "No Watched" : "Watched"}
+                    </button>
+                  </div>
                 </div>
-                <form action={deleteWatchMedia}>
-                  <input type="hidden" name="mediaId" value={media.id} />
-                  <button
-                    type="submit"
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded mr-2"
-                  >
-                    Delete
-                  </button>
-                </form>
-                <button
-                  className={`bg-${media.watched ? "green" : "gray"}-500 hover:bg-${
-                    media.watched ? "green" : "gray"
-                  }-700 text-white font-bold py-1 px-2 rounded`}
-                  onClick={async () => {
-                    await toggleWatched({ mediaId: media.id, watched: !media.watched });
-                  }}
-                >
-                  {media.watched ? "Mark Unwatched" : "Mark Watched"}
-                </button>
               </li>
             ))}
           </ul>
