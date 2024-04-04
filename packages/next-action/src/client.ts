@@ -80,7 +80,7 @@ export function useAction<T, TResult, TError = unknown>(
   const isError = useMemo(() => status && status.success === false, [status]);
   const isSuccess = useMemo(() => status && status.success === true, [status]);
 
-  return { execute, status, data, error, isExecuting, isSuccess, isError };
+  return { execute, status, data, error, isExecuting, isSuccess, isError } as const;
 }
 
 type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
@@ -136,5 +136,5 @@ export function useFormAction<TResult, TError>(
   const isError = useMemo(() => status && status.success === false, [status]);
   const isSuccess = useMemo(() => status && status.success === true, [status]);
 
-  return [action, { status, data, error, isExecuting, isSuccess, isError }] as const;
+  return { action, status, data, error, isExecuting, isSuccess, isError } as const;
 }

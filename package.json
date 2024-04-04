@@ -3,8 +3,11 @@
     "name": "next-action",
     "version": "0.0.0",
     "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
     "scripts": {
-        "build": "turbo run build --filter=packages/next-action",
+        "build": "turbo run build --filter=./packages/next-action",
         "test": "turbo run test",
         "lint": "turbo run lint"
     },

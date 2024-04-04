@@ -11,6 +11,7 @@ import path from "path";
 import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import { ActionError } from "next-action";
+import sharp from "sharp";
 
 function createDB() {
   const globalThisWithDb = globalThis as { __DB?: Map<string, WatchMedia> };
@@ -25,7 +26,7 @@ function createDB() {
 const DB = createDB();
 
 export async function getWatchMediaList() {
-  return Array.from(DB.values());
+  return Array.from(DB.values()).reverse();
 }
 
 export const createWatchMedia = action(
@@ -95,7 +96,9 @@ async function uploadFile(file: File) {
   const fileName = `${name}.${ext}`;
   const filePath = path.join(dir, fileName);
 
-  const fileData = Buffer.from(await file.arrayBuffer());
+  const arrayBuffer = await file.arrayBuffer();
+  const fileData = await sharp(arrayBuffer).resize(256).toBuffer();
+
   await fs.writeFile(filePath, fileData);
   console.log(`File written to '${path.resolve(filePath)}'`);
 

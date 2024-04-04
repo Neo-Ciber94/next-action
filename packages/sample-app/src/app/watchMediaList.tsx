@@ -1,25 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { deleteWatchMedia, toggleWatched, createWatchMedia } from "@/app/lib/api";
 import type { WatchMedia, CreateWatchMedia } from "@/app/lib/schema";
+import { useAction, useFormAction } from "next-action/client";
 
-const today = new Date();
+function defaultWatchMedia(): Partial<CreateWatchMedia> {
+  const today = new Date();
 
-const DEFAULT: Partial<CreateWatchMedia> = {
-  title: "",
-  releaseDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-  genres: new Set(),
-  type: "movie",
-  watched: false,
-  notes: "",
-  image: undefined, // Assume image is a File object
-};
+  return {
+    title: "",
+    releaseDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+    genres: new Set(),
+    type: "movie",
+    watched: false,
+    notes: "",
+    image: undefined, // Assume image is a File object
+  };
+}
 
 export default function WatchMediaList({ watchMediaList }: { watchMediaList: WatchMedia[] }) {
+  const formRef = useRef<HTMLFormElement>(null);
   const [watchMedia, setWatchMedia] = useState<Partial<CreateWatchMedia>>(() =>
-    structuredClone(DEFAULT),
+    structuredClone(defaultWatchMedia()),
   );
-  const [error, setError] = useState<string>();
+
+  const deleteWatchMediaAction = useFormAction(deleteWatchMedia);
+  const toggleWatchedAction = useAction(toggleWatched);
+  const createWatchMediaAction = useAction(createWatchMedia);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -37,20 +44,14 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(undefined);
 
-    try {
-      const result = await createWatchMedia(watchMedia as CreateWatchMedia);
-
-      console.log(result);
-      if (result.success) {
-        setWatchMedia(() => structuredClone(DEFAULT));
-      } else {
-        setError(result.error);
+    const result = await createWatchMediaAction.execute(watchMedia as CreateWatchMedia);
+    if (result.success) {
+      if (formRef.current) {
+        formRef.current.reset();
       }
-    } catch (err) {
-      console.error(err);
-      setError("Something went wrong");
+
+      setWatchMedia(defaultWatchMedia());
     }
   };
 
@@ -60,7 +61,7 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
         <h1 className="text-3xl font-bold mb-4 text-center text-neutral-600">Watch Media List</h1>
         <div className="mb-4">
           <h2 className="text-xl font-bold my-2">Add New Media</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
             <div>
               <input
                 type="text"
@@ -131,20 +132,23 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
               />
             </div>
 
-            {error && <p className="py-2 text-red-600 italic">{error}</p>}
+            {createWatchMediaAction.error && (
+              <p className="py-2 text-red-600 italic">{createWatchMediaAction.error}</p>
+            )}
 
             <div>
               <button
+                disabled={createWatchMediaAction.isExecuting}
                 type="submit"
-                className="bg-neutral-900 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded w-full"
+                className="bg-neutral-900 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded w-full disabled:opacity-50"
               >
-                Add Media
+                {createWatchMediaAction.isExecuting ? "Adding..." : "Add Media"}
               </button>
             </div>
           </form>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 overflow-y-auto max-h-[500px]">
           <h2 className="text-xl font-bold mb-2 text-center">Media List</h2>
           {watchMediaList.length === 0 && (
             <h1 className="text-center p-4 text-2xl text-neutral-500/20">Nothing here</h1>
@@ -152,8 +156,9 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
           <ul className="flex flex-col gap-2">
             {watchMediaList.map((media) => (
               <li key={media.id} className="shadow border-gray-200 p-4">
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex sm:flex-row flex-col items-center justify-between gap-4">
                   <div className="flex flex-row gap-4">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={media.imageUrl}
                       alt={media.title}
@@ -178,24 +183,29 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
                       </p>
                     </div>
                   </div>
-                  <div>
-                    <form action={deleteWatchMedia}>
+                  <div className="w-full sm:w-auto">
+                    <form action={deleteWatchMediaAction.action}>
                       <input type="hidden" name="mediaId" value={media.id} />
                       <button
+                        disabled={deleteWatchMediaAction.isExecuting}
                         type="submit"
-                        className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded min-w-36"
+                        className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded min-w-36 w-full disabled:opacity-50"
                       >
-                        Delete
+                        {deleteWatchMediaAction.isExecuting ? "Deleting..." : "Delete"}
                       </button>
                     </form>
                     <button
-                      className={`mt-4 min-w-36 text-white font-semibold py-2 px-4 rounded ${
+                      disabled={toggleWatchedAction.isExecuting}
+                      className={`mt-4 min-w-36 text-white font-semibold py-2 px-4 rounded w-full disabled:opacity-50 ${
                         media.watched
                           ? "bg-gray-500 hover:bg-gray-700"
                           : "bg-green-500 hover:bg-green-700"
                       }`}
                       onClick={async () => {
-                        await toggleWatched({ mediaId: media.id, watched: !media.watched });
+                        await toggleWatchedAction.execute({
+                          mediaId: media.id,
+                          watched: !media.watched,
+                        });
                       }}
                     >
                       {media.watched ? "No Watched" : "Watched"}
