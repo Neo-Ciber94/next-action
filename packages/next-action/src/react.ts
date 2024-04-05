@@ -3,12 +3,12 @@
 import type { ActionResult } from "./server";
 import { useCallback, useMemo, useState } from "react";
 
+type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
+
 /**
  * Represents a server action.
  */
-type Action<T, TResult, TError> = undefined extends T
-  ? (input?: T) => ActionResult<TResult, TError>
-  : (input: T) => ActionResult<TResult, TError>;
+type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
 
 /**
  * Additional options.
@@ -39,7 +39,7 @@ export function useAction<T, TResult, TError = unknown>(
   fn: Action<T, TResult, TError>,
   options?: ActionOptions<TResult, TError>,
 ) {
-  type TArgs = undefined extends Parameters<typeof fn>[0] ? [input?: T | undefined] : [input: T];
+  type TArgs = [undefined] extends Parameters<typeof fn> ? [input?: T | undefined] : [input: T];
 
   const { onError, onSuccess, onSettled } = options || {};
   const [isExecuting, setIsExecuting] = useState(false);
@@ -80,10 +80,16 @@ export function useAction<T, TResult, TError = unknown>(
   const isError = useMemo(() => status && status.success === false, [status]);
   const isSuccess = useMemo(() => status && status.success === true, [status]);
 
-  return { execute, status, data, error, isExecuting, isSuccess, isError } as const;
+  return {
+    execute,
+    status,
+    data,
+    error,
+    isExecuting,
+    isSuccess,
+    isError,
+  } as const;
 }
-
-type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
 
 /**
  * Represents a server action that takes a form.
