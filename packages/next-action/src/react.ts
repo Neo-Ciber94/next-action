@@ -41,17 +41,43 @@ export function useAction<T, TResult, TError = unknown>(
 ) {
   type TArgs = [undefined] extends Parameters<typeof fn> ? [input?: T | undefined] : [input: T];
 
+  const { execute: callAction, ...rest } = useCallAction(fn, options);
+  const execute = useCallback((...args: TArgs) => callAction(args[0] as T), [callAction]);
+  return { execute, ...rest } as const;
+}
+
+/**
+ * Represents a server action that takes a form.
+ */
+export type FormAction<TResult, TError> = (formData: FormData) => ActionResult<TResult, TError>;
+
+/**
+ * Returns a hook that can call the given form action.
+ * @param fn The action.
+ * @param options Additional options.
+ */
+export function useFormAction<TResult, TError>(
+  fn: FormAction<TResult, TError>,
+  options?: ActionOptions<TResult, TError>,
+) {
+  const { execute, ...rest } = useCallAction((formData: FormData) => fn(formData), options);
+  return { action: execute, ...rest } as const;
+}
+
+function useCallAction<TInput, TResult, TError = unknown>(
+  fn: (input: TInput) => ActionResult<TResult, TError>,
+  options?: ActionOptions<TResult, TError>,
+) {
   const { onError, onSuccess, onSettled } = options || {};
   const [isExecuting, setIsExecuting] = useState(false);
   const [status, setStatus] = useState<ActionState<TResult, TError>>();
 
   const execute = useCallback(
-    async (...args: TArgs) => {
+    async (input: TInput) => {
       setIsExecuting(true);
 
       try {
-        const input = args[0];
-        const result = await fn(input as T);
+        const result = await fn(input);
 
         if (result.success) {
           onSuccess?.(result.data);
@@ -89,58 +115,4 @@ export function useAction<T, TResult, TError = unknown>(
     isSuccess,
     isError,
   } as const;
-}
-
-/**
- * Represents a server action that takes a form.
- */
-export type FormAction<TResult, TError> = (formData: FormData) => ActionResult<TResult, TError>;
-
-/**
- * Returns a hook that can call the given form action.
- * @param fn The action.
- * @param options Additional options.
- */
-export function useFormAction<TResult, TError>(
-  fn: FormAction<TResult, TError>,
-  options?: ActionOptions<TResult, TError>,
-) {
-  const { onError, onSuccess, onSettled } = options || {};
-  const [status, setStatus] = useState<ActionState<TResult, TError>>();
-  const [isExecuting, setIsExecuting] = useState(false);
-
-  const action = useCallback(
-    async (formData: FormData) => {
-      setIsExecuting(true);
-
-      try {
-        const result = await fn(formData);
-
-        if (result.success) {
-          onSuccess?.(result.data);
-        } else {
-          onError?.(result.error);
-        }
-
-        onSettled?.(result);
-        setStatus(result);
-      } finally {
-        setIsExecuting(false);
-      }
-    },
-    [fn, onError, onSuccess],
-  );
-
-  const error = useMemo(() => {
-    return status?.success === false ? status.error : undefined;
-  }, [status]);
-
-  const data = useMemo(() => {
-    return status?.success === true ? status.data : undefined;
-  }, [status]);
-
-  const isError = useMemo(() => status && status.success === false, [status]);
-  const isSuccess = useMemo(() => status && status.success === true, [status]);
-
-  return { action, status, data, error, isExecuting, isSuccess, isError } as const;
 }
