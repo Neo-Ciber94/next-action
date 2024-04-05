@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { deleteWatchMedia, toggleWatched, createWatchMedia } from "@/app/lib/api";
 import type { WatchMedia, CreateWatchMedia } from "@/app/lib/schema";
-import { useAction, useFormAction } from "next-action/client";
+import { useAction, useFormAction } from "next-action/react";
 
 function defaultWatchMedia(): Partial<CreateWatchMedia> {
   const today = new Date();

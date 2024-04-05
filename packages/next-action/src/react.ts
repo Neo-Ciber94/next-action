@@ -39,7 +39,7 @@ export function useAction<T, TResult, TError = unknown>(
   fn: Action<T, TResult, TError>,
   options?: ActionOptions<TResult, TError>,
 ) {
-  type TArgs = Parameters<typeof fn>;
+  type TArgs = undefined extends Parameters<typeof fn>[0] ? [input?: T | undefined] : [input: T];
 
   const { onError, onSuccess, onSettled } = options || {};
   const [isExecuting, setIsExecuting] = useState(false);
