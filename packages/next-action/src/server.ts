@@ -56,10 +56,10 @@ export type ActionResult<TResult, TError> = Promise<
 >;
 
 /**
- * Create a client to create server actions.
+ * Create a function to create other server actions.
  * @param options The options for the provider.
  */
-export function createServerActionProvider<TError = unknown, TContext = {}, TCtx = TContext>(
+export function createServerActionProvider<TError = string, TContext = {}, TCtx = TContext>(
   options?: CreateProviderOptions<TError, TContext, TCtx>,
 ) {
   type TNextContext = void extends TCtx ? TContext : TCtx;

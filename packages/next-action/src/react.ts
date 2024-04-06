@@ -5,9 +5,6 @@ import { useCallback, useMemo, useState } from "react";
 
 type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
 
-/**
- * Represents a server action.
- */
 type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
 
 /**
@@ -15,24 +12,24 @@ type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
  */
 type ActionOptions<TResult, TError> = {
   /**
-   * Callback to call when an error occurs.
+   * Called when an error ocurrs.
    */
   onError?: (error: TError) => void;
 
   /**
-   * Callback to call when it success.
+   * Called when the action successfuly completes.
    */
   onSuccess?: (result: TResult) => void;
 
   /**
-   * Callback to call when it completes with either an error or success.
+   * Called when the action completes.
    */
   onSettled?: (result: ActionState<TResult, TError>) => void;
 };
 
 /**
- * Returns a hook that can call the given action.
- * @param fn The action.
+ * Returns a hook that to the given server action.
+ * @param fn The server action.
  * @param options Additional options.
  */
 export function useAction<T, TResult, TError = unknown>(
@@ -52,8 +49,8 @@ export function useAction<T, TResult, TError = unknown>(
 export type FormAction<TResult, TError> = (formData: FormData) => ActionResult<TResult, TError>;
 
 /**
- * Returns a hook that can call the given form action.
- * @param fn The action.
+ * Returns a hook to call the given server form action.
+ * @param fn The server action.
  * @param options Additional options.
  */
 export function useFormAction<TResult, TError>(
