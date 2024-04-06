@@ -1,8 +1,9 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { deleteWatchMedia, toggleWatched, createWatchMedia } from "@/app/lib/api";
 import type { WatchMedia, CreateWatchMedia } from "@/app/lib/schema";
 import { useAction, useFormAction } from "next-action/react";
+import { useRouter } from "next/navigation";
 
 function defaultWatchMedia(): Partial<CreateWatchMedia> {
   const today = new Date();
@@ -20,6 +21,7 @@ function defaultWatchMedia(): Partial<CreateWatchMedia> {
 
 export default function WatchMediaList({ watchMediaList }: { watchMediaList: WatchMedia[] }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   const [watchMedia, setWatchMedia] = useState<Partial<CreateWatchMedia>>(() =>
     structuredClone(defaultWatchMedia()),
   );
@@ -28,19 +30,22 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
   const toggleWatchedAction = useAction(toggleWatched);
   const createWatchMediaAction = useAction(createWatchMedia);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files[0]) {
-      setWatchMedia((prevWatchMedia) => ({
-        ...prevWatchMedia,
-        image: (() => {
-          const f = new FormData();
-          f.set("image", files[0]);
-          return f;
-        })(),
-      }));
-    }
-  };
+  useEffect(() => {
+    const handleRefresh = () => {
+      router.refresh();
+      console.log("refreshing...");
+    };
+
+    const interval = setInterval(handleRefresh, 60_000);
+    window.addEventListener("focus", handleRefresh);
+    window.addEventListener("online", handleRefresh);
+
+    return () => {
+      window.removeEventListener("focus", handleRefresh);
+      window.removeEventListener("online", handleRefresh);
+      clearInterval(interval);
+    };
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -108,12 +113,25 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
               </select>
             </div>
             <div>
-              <input
+              {/* <input
                 type="file"
                 name="image"
                 accept="image/*"
                 onChange={handleImageChange}
                 className="block w-full p-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              /> */}
+              <ImageSelect
+                name="image"
+                onChange={(file) => {
+                  setWatchMedia((prevWatchMedia) => ({
+                    ...prevWatchMedia,
+                    image: (() => {
+                      const f = new FormData();
+                      f.set("image", file);
+                      return f;
+                    })(),
+                  }));
+                }}
               />
             </div>
             <div>
@@ -217,6 +235,93 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
           </ul>
         </div>
       </div>
+    </div>
+  );
+}
+
+type ImageSelectMode = "picker" | "url";
+
+type ImageSelectProps = {
+  name: string;
+  onChange: (file: File) => void;
+};
+
+function ImageSelect({ name, onChange }: ImageSelectProps) {
+  const [mode, setMode] = useState<ImageSelectMode>("picker");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const handleChangeFile = (file: File) => {
+    onChange(file);
+  };
+
+  const handleFetchImage = async ($url: string) => {
+    setIsLoading(true);
+    setIsError(false);
+
+    try {
+      const url = new URL($url); // validate url
+      const res = await fetch(url.toString());
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch image");
+      }
+
+      const data = await res.blob();
+
+      if (!data.type.startsWith("image/")) {
+        throw new Error("URL was not an image");
+      }
+
+      const fileName = url.pathname.split("/").filter(Boolean).pop() || "<image>";
+      const file = new File([data], fileName, { type: data.type });
+      handleChangeFile(file);
+    } catch (err) {
+      console.error(err);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-row gap-2">
+      <select
+        value={mode}
+        className="block w-full p-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm basis-1/3"
+        onChange={(e) => {
+          setIsError(false);
+          setMode(e.target.value as ImageSelectMode);
+        }}
+      >
+        <option value="picker">Picker</option>
+        <option value="url">URL</option>
+      </select>
+
+      <input
+        type="file"
+        name={name}
+        accept="image/*"
+        className={`w-full p-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${mode === "picker" ? "block" : "hidden"}`}
+        onChange={(e) => {
+          const files = e.currentTarget.files;
+          if (files && files[0]) {
+            handleChangeFile(files[0]);
+          }
+        }}
+      />
+
+      {mode === "url" && (
+        <input
+          type="url"
+          disabled={isLoading}
+          placeholder="Image URL"
+          className={`block w-full p-1 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm 
+          ${isLoading ? "animate-pulse" : ""}
+          ${isError ? "border-red-600 text-red-400" : "border-gray-300"}`}
+          onBlur={(e) => handleFetchImage(e.target.value)}
+        />
+      )}
     </div>
   );
 }

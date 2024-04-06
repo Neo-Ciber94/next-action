@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest --run"
   },
   "dependencies": {
     "next": "14.1.4",
@@ -17,7 +18,7 @@
     "valibot": "^0.30.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.12.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
