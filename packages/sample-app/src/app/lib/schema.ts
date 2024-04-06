@@ -12,11 +12,6 @@ import {
   type Output,
 } from "valibot";
 
-if (!globalThis.File) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  globalThis.File = require("node:buffer").File;
-}
-
 export const CreateWatchMediaSchema = object({
   title: string([toTrimmed()]),
   type: picklist(["movie", "series"]),
