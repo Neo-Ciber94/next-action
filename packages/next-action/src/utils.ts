@@ -11,7 +11,7 @@ export function defaultErrorMapper(err: any): string {
   }
 
   // We only display error messages from 'Error' instances on development mode
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV === "production") {
     return "Something went wrong";
   }
 

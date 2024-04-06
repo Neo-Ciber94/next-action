@@ -6,7 +6,7 @@
     "lint": "eslint src",
     "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
-    "test": "cross-env NODE_ENV=development vitest --run",
+    "test": "vitest --run",
     "prepublish": "pnpm run typecheck && pnpm run build"
   },
   "devDependencies": {
