@@ -152,14 +152,14 @@ export type TestActions = typeof handler.actions;
 export const POST = handler;
 ```
 
-> You should set the `EXPOSE_SERVER_ACTIONS` environment variable to expose the endpoint.
+> You should set the `EXPOSE_SERVER_ACTIONS` environment variable to expose the endpoints.
 
 And on your testing side
 ```ts
 import { createServerActionClient } from "next-action/testing/client";
 
 beforeAll(() => {
-    // Start your nextjs serer
+    // Start your nextjs server
 })
 
 test("Should create user", async () => {
