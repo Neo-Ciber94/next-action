@@ -273,7 +273,14 @@ function ImageSelect({ name, onChange }: ImageSelectProps) {
         throw new Error("URL was not an image");
       }
 
-      const fileName = url.pathname.split("/").filter(Boolean).pop() || "<image>";
+      let fileName = url.pathname.split("/").filter(Boolean).pop() || "<image>";
+
+      // Set extension if doesnt have one
+      if (!fileName.includes(".") && data.type) {
+        const ext = data.type.split("/")[1];
+        fileName += `.${ext}`;
+      }
+
       const file = new File([data], fileName, { type: data.type });
       handleChangeFile(file);
     } catch (err) {
