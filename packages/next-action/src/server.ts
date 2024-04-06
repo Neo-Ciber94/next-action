@@ -7,7 +7,7 @@ import { defaultErrorMapper } from "./utils";
 /**
  * Validate the input of a server action.
  */
-type Validator<T> = {
+export type Validator<T> = {
   parse: (value: unknown) => T;
 };
 
