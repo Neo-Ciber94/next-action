@@ -54,6 +54,9 @@ importers:
       typescript:
         specifier: ^5.4.2
         version: 5.4.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.4.0(@types/node@20.12.2)
 
   packages/sample-app:
     dependencies:
