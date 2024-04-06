@@ -169,6 +169,6 @@ test("Should create user", async () => {
 })
 ```
 
-## See also
+## See also these libraries that inspired `next-action`
 
-- https://github.com/TheEdoRan/next-safe-action This library inspired `next-action`
+- https://github.com/TheEdoRan/next-safe-action
