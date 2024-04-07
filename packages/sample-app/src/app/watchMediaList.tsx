@@ -113,13 +113,6 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
               </select>
             </div>
             <div>
-              {/* <input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="block w-full p-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              /> */}
               <ImageSelect
                 name="image"
                 onChange={(file) => {
@@ -180,7 +173,7 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
                     <img
                       src={media.imageUrl}
                       alt={media.title}
-                      className="w-28 h-28 rounded-md object-cover"
+                      className="w-28 h-28 rounded-md object-cover shadow-lg border-gray-300 border"
                     />
                     <div className="flex flex-col">
                       <p>
@@ -195,9 +188,9 @@ export default function WatchMediaList({ watchMediaList }: { watchMediaList: Wat
                         <span className="font-semibold">Type:</span>{" "}
                         <span className="text-neutral-500">{media.type}</span>
                       </p>
-                      <p>
+                      <p className="max-w-sm">
                         <span className="font-semibold">Notes:</span>{" "}
-                        <span className="text-neutral-500">{media.notes}</span>
+                        <span className="text-neutral-500 text-justify">{media.notes}</span>
                       </p>
                     </div>
                   </div>

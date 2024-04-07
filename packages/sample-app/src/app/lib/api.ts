@@ -12,19 +12,7 @@ import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 import { ActionError } from "next-action";
 import sharp from "sharp";
-
-
-function createDB() {
-  const globalThisWithDb = globalThis as { __DB?: Map<string, WatchMedia> };
-
-  if (!globalThisWithDb.__DB) {
-    globalThisWithDb.__DB = new Map<string, WatchMedia>();
-  }
-
-  return globalThisWithDb.__DB;
-}
-
-const DB = createDB();
+import { DB } from "./db";
 
 export async function getWatchMediaList() {
   return Array.from(DB.values()).reverse();
@@ -76,7 +64,16 @@ export const toggleWatched = action(
 
 export const deleteWatchMedia = action.formAction(
   async ({ input }) => {
+    const watchMedia = DB.get(input.mediaId);
     const deleted = DB.delete(input.mediaId);
+
+    // Delete file
+    if (watchMedia) {
+      if (!(await exists(watchMedia.imageUrl))) {
+        await fs.unlink(watchMedia.imageUrl);
+      }
+    }
+
     revalidatePath("/");
     return deleted;
   },
