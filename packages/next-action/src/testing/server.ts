@@ -3,6 +3,9 @@ import { decode } from "seria/form-data";
 import { stringifyToStream } from "seria";
 import { ActionError } from "..";
 
+const EXPOSE_SERVER_ACTIONS_ERROR =
+  "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint";
+
 export type ActionRecord = {
   [key: string]: (...args: any[]) => Promise<unknown>;
 };
@@ -10,9 +13,13 @@ export type ActionRecord = {
 export function exposeServerActions<T extends ActionRecord>(actions: T) {
   const handler = async function (req: Request) {
     if (!process.env.EXPOSE_SERVER_ACTIONS) {
-      throw new Error(
-        "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint",
-      );
+      console.error(EXPOSE_SERVER_ACTIONS_ERROR);
+
+      if (process.env.NODE_ENV !== "production") {
+        return json({ message: EXPOSE_SERVER_ACTIONS_ERROR });
+      }
+
+      return new Response(null, { status: 500 });
     }
 
     const url = new URL(req.url);
