@@ -1,29 +1,34 @@
 import { describe, beforeAll, afterAll, expect, test } from "vitest";
-import { spawn, type ChildProcess } from "child_process";
 import path from "path";
 import fs from "fs/promises";
 import { createServerActionClient } from "next-action/testing/client";
-import { type TestActions } from "@/app/api/[...testactions]/route";
+import { type TestActions } from "@/app/api/testactions/[...testactions]/route";
+import { startNextTestServer, type NextTestServer } from "../helpers/nextTestServer";
 
 const PORT = 3456;
 const BASE_URL = `http://localhost:${PORT}`;
 
-if (!globalThis.File) {
-  globalThis.File = require("buffer").File;
-}
+let serverProcess: NextTestServer | undefined = undefined;
 
-let serverProcess: ChildProcess | undefined = undefined;
 beforeAll(async () => {
-  serverProcess = await startDevServer();
-}, 120_000);
+  serverProcess = await startNextTestServer({
+    port: PORT,
+    envVars: {
+      EXPOSE_SERVER_ACTIONS: "1",
+      NO_SEED_DATABASE: "1",
+    },
+    onStdout: () => {},
+  });
+}, 60_000);
 
-afterAll(() => {
-  serverProcess?.kill();
+afterAll(async () => {
+  serverProcess?.stop();
+  await removePublicImages();
 });
 
 describe("MediaWatch List", () => {
-  test("Should call test action", async () => {
-    const client = createServerActionClient<TestActions>(`${BASE_URL}/testactions`);
+  test("Should call test action", { timeout: 60_000 }, async () => {
+    const client = createServerActionClient<TestActions>(`${BASE_URL}/api/testactions`);
 
     await expect(client.getWatchMediaList()).resolves.toStrictEqual([]);
 
@@ -56,42 +61,20 @@ describe("MediaWatch List", () => {
         return formData;
       })(),
     });
+
+    await expect(client.getWatchMediaList()).resolves.toHaveLength(2);
   });
 });
 
-function startDevServer(): Promise<ChildProcess> {
-  const cwdDir = path.join("..");
-  const isWin = process.platform === "win32";
-  const cmd = isWin ? "npm.cmd" : "npm";
-  const childProcess = spawn(cmd, ["run", "dev", `--port ${PORT}`], {
-    cwd: cwdDir,
-    env: {
-      ...process.env,
-      BASE_URL,
-    },
-  });
-
-  ["SIGINT", "exit", "unhandledRejection"].forEach((event) => {
-    process.on(event, () => {
-      childProcess.kill();
-    });
-  });
-
-  return new Promise((resolve) => {
-    childProcess.stdout.on("data", (data: Buffer) => {
-      const s = data.toString("utf-8");
-      console.log(s);
-      if (s.includes("Listening")) {
-        resolve(childProcess);
-      }
-    });
-  });
-}
-
 async function readArtifact(fileName: string) {
-  const dir = path.join(__dirname, "..", "artifacts");
+  const dir = path.join(__dirname, "..", "tests", "artifacts");
   const filePath = path.join(dir, fileName);
   const buffer = await fs.readFile(filePath);
   const file = new File([buffer], fileName);
   return file;
+}
+
+async function removePublicImages() {
+  const dir = path.join(__dirname, "..", "public", "images");
+  await fs.rm(dir, { force: true, recursive: true });
 }

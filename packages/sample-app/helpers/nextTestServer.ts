@@ -10,6 +10,7 @@ type NextTestServerOptions = {
   host?: string;
   port?: number;
   envVars?: Record<string, string>;
+  isProd?: boolean;
   onReady?: () => Promise<void> | void;
   onStdout?: (data: string) => void;
   onStderr?: (data: string) => void;
@@ -26,8 +27,9 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
     onStdout = console.log,
     onStderr = console.error,
     onReady,
+    isProd = false,
   } = opts || {};
-  const childProcess = spawn(cmd, ["run", "dev"], {
+  const childProcess = spawn(cmd, ["run", isProd ? "prod" : "dev"], {
     env: {
       ...process.env,
       ...envVars,
@@ -36,7 +38,7 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
     },
   });
 
-  ["SIGINT", "exit", "unhandledRejection"].forEach((event) => {
+  ["SIGINT", "exit", "SIGTERM", "SIGHUP", "unhandledRejection"].forEach((event) => {
     process.on(event, () => {
       childProcess.kill();
     });

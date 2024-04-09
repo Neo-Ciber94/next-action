@@ -34,8 +34,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "vitest.config.mts",
-    "scripts/run.mts",
-    "scripts/client.mts"
   ],
   "exclude": [
     "node_modules"
