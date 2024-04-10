@@ -96,10 +96,7 @@ describe("Error mapping", () => {
   });
 
   test("Should NOT show error on process.env.NODE_ENV === production", async () => {
-    beforeEach(() => {
-      vi.resetModules();
-      process.env = { ...OLD_ENV, NODE_ENV: "production" };
-    });
+    process.env = { ...OLD_ENV, NODE_ENV: "production" };
 
     const action = createServerActionProvider();
 
@@ -113,11 +110,8 @@ describe("Error mapping", () => {
     });
   });
 
-  test("Should show error on process.env.NODE_ENV !== production", async () => {
-    beforeEach(() => {
-      vi.resetModules();
-      process.env = { ...OLD_ENV, NODE_ENV: "development" };
-    });
+  test("Should show error on process.env.NODE_ENV === development", async () => {
+    process.env = { ...OLD_ENV, NODE_ENV: "development" };
 
     const action = createServerActionProvider();
 
