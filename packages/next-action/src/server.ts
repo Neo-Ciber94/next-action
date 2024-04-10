@@ -22,7 +22,9 @@ export type ActionFunction<T, TResult, TCtx> = undefined extends T
   ? (opts: { input?: T; context: TCtx }) => Promise<TResult>
   : (opts: { input: T; context: TCtx }) => Promise<TResult>;
 
-type CreateProviderContext<TContext> = { context?: void } | { context: TContext };
+type CreateProviderContext<TContext> =
+  | { context?: void }
+  | { context: () => TContext | Promise<TContext> };
 
 /**
  * Options to create the server action provider.
@@ -66,12 +68,10 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
 
   const {
     mapError = defaultErrorMapper,
-    context: initialContext = {},
+    context: getContext = undefined,
     onBeforeExecute,
     onAfterExecute,
   } = options || {};
-
-  let context = initialContext as any;
 
   /**
    * Create a server action that takes a value.
@@ -86,6 +86,9 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
       const { validator = { parse: identity } } = actionOptions || {};
 
       try {
+        let context: any =
+          getContext === undefined ? undefined : await Promise.resolve(getContext());
+
         if (onBeforeExecute) {
           const nextContext = await onBeforeExecute({ input, context });
 

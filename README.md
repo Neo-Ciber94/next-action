@@ -206,11 +206,13 @@ You can also set a context that all your server actions will have access to.
 import { createServerActionProvider } "next-action/server";
 
 export const action = createServerActionProvider({
-  context: { db }
+  context() {
+    return { db }
+  }
 });
 ```
 
-You can access the context values on your server actions.
+The context will be created each time the server action is called, after that you can access the context values on your server actions.
 
 ```ts
 // lib/actions/api.ts
