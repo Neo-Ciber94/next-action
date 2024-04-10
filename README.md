@@ -172,3 +172,4 @@ test("Should create user", async () => {
 ## See also these libraries that inspired `next-action`
 
 - https://github.com/TheEdoRan/next-safe-action
+- https://github.com/trpc/trpc
