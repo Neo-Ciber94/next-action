@@ -1,6 +1,6 @@
 {
     "root": true,
-    "name": "next-action",
+    "name": "next-action-monorepo",
     "version": "0.0.0",
     "private": true,
     "workspaces": [
