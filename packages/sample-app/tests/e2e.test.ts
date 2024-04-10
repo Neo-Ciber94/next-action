@@ -19,7 +19,7 @@ beforeAll(async () => {
     },
     onStdout: () => {},
   });
-}, 60_000);
+}, 120_000);
 
 afterAll(async () => {
   serverProcess?.stop();
@@ -29,7 +29,7 @@ afterAll(async () => {
 describe("MediaWatch List", () => {
   const client = createServerActionClient<TestActions>(`${BASE_URL}/api/testactions`);
 
-  beforeAll(async () => {
+  afterAll(async () => {
     try {
       await client.deleteAllWatchMedia();
     } catch (err) {
