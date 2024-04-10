@@ -47,13 +47,19 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
   childProcess.stdout.setEncoding("utf8");
   childProcess.stderr.setEncoding("utf8");
 
-  childProcess.stderr.on("data", (data) => {
-    onStderr?.(data);
-  });
-
   let init = false;
+  let isSettled = false;
 
   return new Promise<NextTestServer>((resolve, reject) => {
+    childProcess.stderr.on("data", (data) => {
+      if (!isSettled) {
+        isSettled = true;
+        reject(new Error(`Failed to start test server: ${data}`));
+      }
+
+      onStderr?.(data);
+    });
+
     childProcess.stdout.on("data", (data) => {
       onStdout?.(data);
 
@@ -62,6 +68,10 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
 
         waitForConnection({ host, port })
           .then(async (isConnected) => {
+            if (isSettled) {
+              return;
+            }
+
             if (isConnected) {
               const nextServer: NextTestServer = {
                 get childProcess() {
@@ -71,6 +81,8 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
                   childProcess.kill();
                 },
               };
+
+              isSettled = true;
 
               await Promise.all([
                 Promise.resolve(onReady?.()),

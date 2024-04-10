@@ -1,4 +1,5 @@
 import {
+  deleteAllWatchMedia,
   createWatchMedia,
   deleteWatchMedia,
   getWatchMediaList,
@@ -11,6 +12,7 @@ const testActions = exposeServerActions({
   createWatchMedia,
   toggleWatched,
   deleteWatchMedia,
+  deleteAllWatchMedia,
 });
 
 export type TestActions = typeof testActions.actions;

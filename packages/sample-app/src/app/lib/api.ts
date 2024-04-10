@@ -15,7 +15,7 @@ import sharp from "sharp";
 import { DB } from "./db";
 
 export async function getWatchMediaList() {
-  return Array.from(DB.values()).reverse();
+  return Array.from(DB.data.values()).reverse();
 }
 
 export const createWatchMedia = action(
@@ -38,7 +38,7 @@ export const createWatchMedia = action(
       imageUrl: await uploadFile(image),
     };
 
-    DB.set(id, watchMedia);
+    DB.data.set(id, watchMedia);
     revalidatePath("/");
     return watchMedia;
   },
@@ -49,7 +49,7 @@ export const createWatchMedia = action(
 
 export const toggleWatched = action(
   async ({ input }) => {
-    const media = Array.from(DB.values()).find((m) => m.id === input.mediaId);
+    const media = Array.from(DB.data.values()).find((m) => m.id === input.mediaId);
 
     if (media) {
       media.watched = input.watched;
@@ -62,10 +62,14 @@ export const toggleWatched = action(
   },
 );
 
+export const deleteAllWatchMedia = async () => {
+  return Promise.resolve(DB.destroy());
+};
+
 export const deleteWatchMedia = action.formAction(
   async ({ input }) => {
-    const watchMedia = DB.get(input.mediaId);
-    const deleted = DB.delete(input.mediaId);
+    const watchMedia = DB.data.get(input.mediaId);
+    const deleted = DB.data.delete(input.mediaId);
 
     // Delete file
     if (watchMedia) {

@@ -1,8 +1,8 @@
 import { type WatchMedia } from "./schema";
 
-function createDB() {
-  const globalThisWithDb = globalThis as { __DB?: Map<string, WatchMedia> };
+const globalThisWithDb = globalThis as { __DB?: Map<string, WatchMedia> };
 
+function getOrInitDb() {
   if (!globalThisWithDb.__DB) {
     globalThisWithDb.__DB = new Map<string, WatchMedia>();
 
@@ -58,4 +58,11 @@ function createDB() {
   return globalThisWithDb.__DB;
 }
 
-export const DB = createDB();
+export const DB = {
+  get data() {
+    return getOrInitDb();
+  },
+  destroy() {
+    delete globalThisWithDb.__DB;
+  },
+};

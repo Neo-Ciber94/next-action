@@ -27,9 +27,17 @@ afterAll(async () => {
 });
 
 describe("MediaWatch List", () => {
-  test("Should call test action", { timeout: 60_000 }, async () => {
-    const client = createServerActionClient<TestActions>(`${BASE_URL}/api/testactions`);
+  const client = createServerActionClient<TestActions>(`${BASE_URL}/api/testactions`);
 
+  beforeAll(async () => {
+    try {
+      await client.deleteAllWatchMedia();
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  test("Should call test action", { timeout: 60_000 }, async () => {
     await expect(client.getWatchMediaList()).resolves.toStrictEqual([]);
 
     await client.createWatchMedia({
@@ -47,7 +55,7 @@ describe("MediaWatch List", () => {
       })(),
     });
 
-    await client.createWatchMedia({
+    const watchMedia = await client.createWatchMedia({
       title: "Title 2",
       watched: false,
       releaseDate: new Date(2024, 3, 1),
@@ -63,6 +71,28 @@ describe("MediaWatch List", () => {
     });
 
     await expect(client.getWatchMediaList()).resolves.toHaveLength(2);
+    const lastAddedId = watchMedia.success ? watchMedia.data.id : throwUnreachable();
+
+    await expect(
+      client.toggleWatched({
+        watched: true,
+        mediaId: lastAddedId,
+      }),
+    ).resolves.toStrictEqual({ success: true, data: void 0 });
+
+    await expect(client.getWatchMediaList()).resolves.toEqual([
+      { watched: true },
+      { watched: true },
+    ]);
+
+    const deleteFormData = new FormData();
+    deleteFormData.set("id", lastAddedId);
+    await expect(client.deleteWatchMedia(deleteFormData)).resolves.toStrictEqual({
+      success: true,
+      data: true,
+    });
+
+    await expect(client.getWatchMediaList()).resolves.toHaveLength(1);
   });
 });
 
@@ -77,4 +107,8 @@ async function readArtifact(fileName: string) {
 async function removePublicImages() {
   const dir = path.join(__dirname, "..", "public", "images");
   await fs.rm(dir, { force: true, recursive: true });
+}
+
+function throwUnreachable(): never {
+  throw new Error("Unreachable");
 }
