@@ -47,7 +47,7 @@ describe("Call server action", () => {
   });
 });
 
-describe("Should call form server action", () => {
+describe("Call form server action", () => {
   const action = createServerActionProvider();
 
   test("Should return success", async () => {
@@ -66,6 +66,37 @@ describe("Should call form server action", () => {
     await expect(myAction(new FormData())).resolves.toStrictEqual({
       success: false,
       error: "Oh oh, an error",
+    });
+  });
+
+  test("Should invoke form action no args", async () => {
+    const myAction = action.formAction(async () => {
+      return 10;
+    });
+
+    await expect(myAction.action()).resolves.toStrictEqual({ success: true, data: 10 });
+  });
+
+  test("Should invoke form action with arguments", async () => {
+    const validator: Validator<{ x: number }> = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      parse(value: any) {
+        return { x: Number(value.x) };
+      },
+    };
+
+    const myAction = action.formAction(
+      async ({ input }) => {
+        return 15 * input.x;
+      },
+      {
+        validator,
+      },
+    );
+
+    await expect(myAction.action({ x: 2 })).resolves.toStrictEqual({
+      success: true,
+      data: 30,
     });
   });
 });
