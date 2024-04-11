@@ -34,34 +34,64 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "default": "./dist/index.mjs",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.mts"
+      }
     },
     "./server": {
-      "import": "./dist/server.ms",
-      "require": "./dist/server.js",
-      "types": "./dist/server.d.ts"
+      "import": {
+        "default": "./dist/server.mjs",
+        "types": "./dist/server.d.ts"
+      },
+      "require": {
+        "default": "./dist/server.js",
+        "types": "./dist/server.d.mts"
+      }
     },
     "./react": {
-      "import": "./dist/react.mjs",
-      "require": "./dist/react.js",
-      "types": "./dist/react.d.ts"
+      "import": {
+        "default": "./dist/react.mjs",
+        "types": "./dist/react.d.ts"
+      },
+      "require": {
+        "default": "./dist/react.js",
+        "types": "./dist/react.d.mts"
+      }
     },
     "./utils": {
-      "import": "./dist/utils.mjs",
-      "require": "./dist/utils.js",
-      "types": "./dist/utils.d.ts"
+      "import": {
+        "default": "./dist/utils.mjs",
+        "types": "./dist/utils.d.ts"
+      },
+      "require": {
+        "default": "./dist/utils.js",
+        "types": "./dist/utils.d.mts"
+      }
     },
     "./testing/server": {
-      "import": "./dist/testing/server.mjs",
-      "require": "./dist/testing/server.js",
-      "types": "./dist/testing/server.d.ts"
+      "import": {
+        "default": "./dist/testing/server.mjs",
+        "types": "./dist/testing/server.d.ts"
+      },
+      "require": {
+        "default": "./dist/testing/server.js",
+        "types": "./dist/testing/server.d.mts"
+      }
     },
     "./testing/client": {
-      "import": "./dist/testing/client.mjs",
-      "require": "./dist/testing/client.js",
-      "types": "./dist/testing/client.d.ts"
+      "import": {
+        "default": "./dist/testing/client.mjs",
+        "types": "./dist/testing/client.d.ts"
+      },
+      "require": {
+        "default": "./dist/testing/client.js",
+        "types": "./dist/testing/client.d.mts"
+      }
     }
   },
   "files": [
