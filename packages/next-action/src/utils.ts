@@ -20,7 +20,7 @@ export function defaultErrorMapper(err: any): string {
   }
 
   if (typeof err?.toString === "function") {
-    return err.toString();
+    return String(err.toString()); // ensure if a string
   }
 
   try {
