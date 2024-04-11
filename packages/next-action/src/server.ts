@@ -8,6 +8,12 @@ import { defaultErrorMapper } from "./utils";
  * Validate the input of a server action.
  */
 export type Validator<T> = {
+  /**
+   * Convert the value to `T`.
+   * @param value The value to parse.
+   * @returns The parsed value.
+   * @throws If the value cannot be converted to `T`.
+   */
   parse: (value: unknown) => T;
 };
 
@@ -15,12 +21,18 @@ export type Validator<T> = {
  * Options for a server action.
  */
 export type ActionOptions<T> = {
+  /**
+   * A validator for the type `T`.
+   */
   validator: Validator<T>;
 };
 
+/**
+ * Represents a server action.
+ */
 export type ActionFunction<T, TResult, TCtx> = undefined extends T
-  ? (opts: { input?: T; context: TCtx }) => Promise<TResult>
-  : (opts: { input: T; context: TCtx }) => Promise<TResult>;
+  ? (params: { input?: T; context: TCtx }) => Promise<TResult>
+  : (params: { input: T; context: TCtx }) => Promise<TResult>;
 
 type CreateProviderContext<TContext> =
   | { context?: void }
@@ -39,7 +51,7 @@ export type CreateProviderOptions<TError, TContext, TCtx> = CreateProviderContex
   /**
    * Run before executing a server action.
    */
-  onBeforeExecute?: (opts: {
+  onBeforeExecute?: (params: {
     input: unknown;
     context: TContext;
   }) => TCtx | void | Promise<TCtx | void>;
@@ -47,7 +59,7 @@ export type CreateProviderOptions<TError, TContext, TCtx> = CreateProviderContex
   /**
    * Run after executing a server action.
    */
-  onAfterExecute?: (opts: { result: unknown; context: TCtx }) => void | Promise<void>;
+  onAfterExecute?: (params: { result: unknown; context: TCtx }) => void | Promise<void>;
 };
 
 /**
@@ -75,7 +87,7 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
 
   /**
    * Create a server action that takes a value.
-   * @param fn The function.
+   * @param fn The action.
    * @param actionOptions Additional options, like a validator.
    */
   function action<T = void, TResult = any>(
@@ -130,11 +142,11 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
 
   /**
    * Create a server action that takes a `FormData`.
-   * @param fn The function.
+   * @param fn The action.
    * @param actionOptions Additional options, like a validator.
    */
   function formAction<T = void, TResult = void>(
-    fn: (opts: { input: T; context: TCtx }) => Promise<TResult>,
+    fn: (params: { input: T; context: TCtx }) => Promise<TResult>,
     actionOptions?: ActionOptions<T>,
   ) {
     const baseAction = action<T, TResult>(
