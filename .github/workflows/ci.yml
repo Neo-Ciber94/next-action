@@ -21,7 +21,7 @@ jobs:
         run_install: |
             - recursive: true
               args: [--frozen-lockfile]
-
+            - args: [--global, turbo]
     # Tests
     - name: Run tests
       run: pnpm test
