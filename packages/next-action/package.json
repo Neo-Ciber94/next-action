@@ -3,11 +3,12 @@
   "version": "0.0.1-beta2",
   "scripts": {
     "build": "tsup",
+    "build:docs": "typedoc",
     "lint": "eslint src",
     "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
-    "prepublish": "pnpm run typecheck && pnpm run build"
+    "prepublish": "pnpm run typecheck && pnpm run build",
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
@@ -20,6 +21,7 @@
     "rimraf": "^5.0.5",
     "seria": "0.1.9",
     "tsup": "^8.0.2",
+    "typedoc": "^0.25.13",
     "typescript": "^5.4.2",
     "vitest": "^1.4.0"
   },
