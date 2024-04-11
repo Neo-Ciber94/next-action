@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    # Install
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v3.0.0
+      with:
+        version: 8
+        run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
+
+    # Tests
+    - name: Run tests
+      run: pnpm test
+
+    - name: Check types
+      run: pnpm typecheck
+
+    - name: Check lint
+      run: pnpm lint
