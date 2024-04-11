@@ -36,51 +36,51 @@
     ".": {
       "import": {
         "default": "./dist/index.mjs",
-        "types": "./dist/index.d.ts"
+        "types": "./dist/index.d.mts"
       },
       "require": {
         "default": "./dist/index.js",
-        "types": "./dist/index.d.mts"
+        "types": "./dist/index.d.ts"
       }
     },
     "./server": {
       "import": {
         "default": "./dist/server.mjs",
-        "types": "./dist/server.d.ts"
+        "types": "./dist/server.d.mts"
       },
       "require": {
         "default": "./dist/server.js",
-        "types": "./dist/server.d.mts"
+        "types": "./dist/server.d.ts"
       }
     },
     "./react": {
       "import": {
         "default": "./dist/react.mjs",
-        "types": "./dist/react.d.ts"
+        "types": "./dist/react.d.mts"
       },
       "require": {
         "default": "./dist/react.js",
-        "types": "./dist/react.d.mts"
+        "types": "./dist/react.d.ts"
       }
     },
     "./utils": {
       "import": {
         "default": "./dist/utils.mjs",
-        "types": "./dist/utils.d.ts"
+        "types": "./dist/utils.d.mts"
       },
       "require": {
         "default": "./dist/utils.js",
-        "types": "./dist/utils.d.mts"
+        "types": "./dist/utils.d.ts"
       }
     },
     "./testing/server": {
       "import": {
         "default": "./dist/testing/server.mjs",
-        "types": "./dist/testing/server.d.ts"
+        "types": "./dist/testing/server.d.mts"
       },
       "require": {
         "default": "./dist/testing/server.js",
-        "types": "./dist/testing/server.d.mts"
+        "types": "./dist/testing/server.d.ts"
       }
     },
     "./testing/client": {
@@ -90,7 +90,7 @@
       },
       "require": {
         "default": "./dist/testing/client.js",
-        "types": "./dist/testing/client.d.mts"
+        "types": "./dist/testing/client.d.ts"
       }
     }
   },
