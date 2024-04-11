@@ -26,8 +26,8 @@ jobs:
             - args: [--global, turbo]
 
       - name: Build
-        run: pnpm build
-        
+        run: pnpm build && cd packages/sample-app && pnpm install
+
       - name: Run tests
         run: pnpm test
 
