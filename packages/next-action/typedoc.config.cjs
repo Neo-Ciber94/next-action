@@ -2,6 +2,6 @@
 module.exports = {
   entryPoints: ["./src/**/*.ts"],
   plugin: ["typedoc-material-theme"],
-  themeColor: "#000cfa",
+  themeColor: "#0085fa",
   out: "docs",
 };

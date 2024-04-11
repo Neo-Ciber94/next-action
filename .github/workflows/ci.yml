@@ -2,32 +2,58 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    # Install
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v3.0.0
-      with:
-        version: 8
-        run_install: |
+      # Install
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3.0.0
+        with:
+          version: 8
+          run_install: |
             - recursive: true
               args: [--frozen-lockfile]
             - args: [--global, turbo]
-    # Tests
-    - name: Run tests
-      run: pnpm test
+      # Tests
+      - name: Run tests
+        run: pnpm test
 
-    - name: Check types
-      run: pnpm typecheck
+      - name: Check types
+        run: pnpm typecheck
 
-    - name: Check lint
-      run: pnpm lint
+      - name: Check lint
+        run: pnpm lint
+
+  docs:
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Install
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3.0.0
+        with:
+          version: 8
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
+
+      - name: Update README
+        run: cd packages/next-action && pnpm copy:readme
+
+      - name: Build docs
+        run: cd packages/next-action && pnpm build:docs
+
+      - name: Deploy docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: packages/next-action/docs

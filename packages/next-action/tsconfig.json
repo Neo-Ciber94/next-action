@@ -25,6 +25,7 @@
   },
   "include": [
     "src",
+    "scripts",
     "vitest.config.mts",
     "setupTests.ts",
     "typedoc.config.cjs"
