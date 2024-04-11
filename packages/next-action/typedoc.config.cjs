@@ -1,12 +1,7 @@
 /** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
-  entryPoints: [
-    "./src/index.ts",
-    "./src/server.ts",
-    "./src/react.ts",
-    "./src/utils.ts",
-    "./src/testing/server.ts",
-    "./src/testing/client.ts",
-  ],
+  entryPoints: ["./src/**/*.ts"],
+  plugin: ["typedoc-material-theme"],
+  themeColor: "#000cfa",
   out: "docs",
 };
