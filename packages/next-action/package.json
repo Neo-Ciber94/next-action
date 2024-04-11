@@ -34,33 +34,33 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/index.js",
-      "default": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./server": {
-      "import": "./dist/server.js",
-      "default": "./dist/server.js",
+      "import": "./dist/server.ms",
+      "require": "./dist/server.js",
       "types": "./dist/server.d.ts"
     },
     "./react": {
-      "import": "./dist/react.js",
-      "default": "./dist/react.js",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.js",
       "types": "./dist/react.d.ts"
     },
     "./utils": {
-      "import": "./dist/utils.js",
-      "default": "./dist/utils.js",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.js",
       "types": "./dist/utils.d.ts"
     },
     "./testing/server": {
-      "import": "./dist/testing/server.js",
-      "default": "./dist/testing/server.js",
+      "import": "./dist/testing/server.mjs",
+      "require": "./dist/testing/server.js",
       "types": "./dist/testing/server.d.ts"
     },
     "./testing/client": {
-      "import": "./dist/testing/client.js",
-      "default": "./dist/testing/client.js",
+      "import": "./dist/testing/client.mjs",
+      "require": "./dist/testing/client.js",
       "types": "./dist/testing/client.d.ts"
     }
   },
