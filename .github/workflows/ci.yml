@@ -26,7 +26,7 @@ jobs:
             - args: [--global, turbo]
 
       - name: Build
-        run: pnpm build
+        run: pnpm build && pnpm install --recursive
 
       - name: Run tests
         run: pnpm test
