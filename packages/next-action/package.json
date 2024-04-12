@@ -1,6 +1,6 @@
 {
   "name": "next-action",
-  "version": "0.0.1-beta2",
+  "version": "0.0.1-beta3",
   "scripts": {
     "build": "tsup",
     "build:docs": "typedoc",
