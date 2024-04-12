@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "build:docs": "typedoc",
+    "build:docs": "typedoc --favicon ./public/favicon.ico",
     "lint": "eslint src",
     "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
@@ -32,6 +32,7 @@
     "tsx": "^4.7.2",
     "typedoc": "^0.25.13",
     "typedoc-material-theme": "^1.0.2",
+    "typedoc-plugin-extras": "^3.0.0",
     "typescript": "^5.4.2",
     "vitest": "^1.4.0"
   },

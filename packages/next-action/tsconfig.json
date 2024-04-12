@@ -28,6 +28,7 @@
     "scripts",
     "vitest.config.mts",
     "setupTests.ts",
+    "tsup.config.ts",
     "typedoc.config.cjs"
   ]
 }
