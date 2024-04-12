@@ -1,0 +1,256 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>next-action</title><meta name="description" content="Documentation for next-action"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-sys-color-primary: #a8c8ff;
+    --md-sys-color-on-primary: #003061;
+    --md-sys-color-primary-container: #004689;
+    --md-sys-color-on-primary-container: #d5e3ff;
+    --md-sys-color-secondary: #bdc7dc;
+    --md-sys-color-on-secondary: #273141;
+    --md-sys-color-secondary-container: #3d4758;
+    --md-sys-color-on-secondary-container: #d9e3f8;
+    --md-sys-color-tertiary: #dbbce1;
+    --md-sys-color-on-tertiary: #3e2845;
+    --md-sys-color-tertiary-container: #563e5d;
+    --md-sys-color-on-tertiary-container: #f8d8fe;
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000a;
+    --md-sys-color-on-error-container: #ffb4ab;
+    --md-sys-color-background: #1a1c1e;
+    --md-sys-color-on-background: #e3e2e6;
+    --md-sys-color-surface: #1a1c1e;
+    --md-sys-color-on-surface: #e3e2e6;
+    --md-sys-color-surface-variant: #43474e;
+    --md-sys-color-on-surface-variant: #c4c6cf;
+    --md-sys-color-outline: #8e9199;
+    --md-sys-color-outline-variant: #43474e;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #e3e2e6;
+    --md-sys-color-inverse-on-surface: #2f3033;
+    --md-sys-color-inverse-primary: #005eb3;
+    --md-sys-color-surface-dim: #121316;
+    --md-sys-color-surface-bright: #38393c;
+    --md-sys-color-surface-container-lowest: #0d0e11;
+    --md-sys-color-surface-container-low: #1a1c1e;
+    --md-sys-color-surface-container: #1e2023;
+    --md-sys-color-surface-container-high: #292a2d;
+    --md-sys-color-surface-container-highest: #343538
+  }
+}
+:root[data-theme="dark"] {
+  --md-sys-color-primary: #a8c8ff;
+  --md-sys-color-on-primary: #003061;
+  --md-sys-color-primary-container: #004689;
+  --md-sys-color-on-primary-container: #d5e3ff;
+  --md-sys-color-secondary: #bdc7dc;
+  --md-sys-color-on-secondary: #273141;
+  --md-sys-color-secondary-container: #3d4758;
+  --md-sys-color-on-secondary-container: #d9e3f8;
+  --md-sys-color-tertiary: #dbbce1;
+  --md-sys-color-on-tertiary: #3e2845;
+  --md-sys-color-tertiary-container: #563e5d;
+  --md-sys-color-on-tertiary-container: #f8d8fe;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffb4ab;
+  --md-sys-color-background: #1a1c1e;
+  --md-sys-color-on-background: #e3e2e6;
+  --md-sys-color-surface: #1a1c1e;
+  --md-sys-color-on-surface: #e3e2e6;
+  --md-sys-color-surface-variant: #43474e;
+  --md-sys-color-on-surface-variant: #c4c6cf;
+  --md-sys-color-outline: #8e9199;
+  --md-sys-color-outline-variant: #43474e;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #e3e2e6;
+  --md-sys-color-inverse-on-surface: #2f3033;
+  --md-sys-color-inverse-primary: #005eb3;
+  --md-sys-color-surface-dim: #121316;
+  --md-sys-color-surface-bright: #38393c;
+  --md-sys-color-surface-container-lowest: #0d0e11;
+  --md-sys-color-surface-container-low: #1a1c1e;
+  --md-sys-color-surface-container: #1e2023;
+  --md-sys-color-surface-container-high: #292a2d;
+  --md-sys-color-surface-container-highest: #343538
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --md-sys-color-primary: #005eb3;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d5e3ff;
+    --md-sys-color-on-primary-container: #001b3c;
+    --md-sys-color-secondary: #555f71;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #d9e3f8;
+    --md-sys-color-on-secondary-container: #121c2b;
+    --md-sys-color-tertiary: #6f5675;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #f8d8fe;
+    --md-sys-color-on-tertiary-container: #28132f;
+    --md-sys-color-error: #ba1a1a;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #ffdad6;
+    --md-sys-color-on-error-container: #410002;
+    --md-sys-color-background: #fdfbff;
+    --md-sys-color-on-background: #1a1c1e;
+    --md-sys-color-surface: #fdfbff;
+    --md-sys-color-on-surface: #1a1c1e;
+    --md-sys-color-surface-variant: #e0e2ec;
+    --md-sys-color-on-surface-variant: #43474e;
+    --md-sys-color-outline: #74777f;
+    --md-sys-color-outline-variant: #c4c6cf;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #2f3033;
+    --md-sys-color-inverse-on-surface: #f1f0f4;
+    --md-sys-color-inverse-primary: #a8c8ff;
+    --md-sys-color-surface-dim: #dad9dd;
+    --md-sys-color-surface-bright: #faf9fd;
+    --md-sys-color-surface-container-lowest: #ffffff;
+    --md-sys-color-surface-container-low: #f4f3f7;
+    --md-sys-color-surface-container: #eeedf1;
+    --md-sys-color-surface-container-high: #e9e7eb;
+    --md-sys-color-surface-container-highest: #e3e2e6
+  }
+}
+:root[data-theme="light"] {
+  --md-sys-color-primary: #005eb3;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d5e3ff;
+  --md-sys-color-on-primary-container: #001b3c;
+  --md-sys-color-secondary: #555f71;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #d9e3f8;
+  --md-sys-color-on-secondary-container: #121c2b;
+  --md-sys-color-tertiary: #6f5675;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #f8d8fe;
+  --md-sys-color-on-tertiary-container: #28132f;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-background: #fdfbff;
+  --md-sys-color-on-background: #1a1c1e;
+  --md-sys-color-surface: #fdfbff;
+  --md-sys-color-on-surface: #1a1c1e;
+  --md-sys-color-surface-variant: #e0e2ec;
+  --md-sys-color-on-surface-variant: #43474e;
+  --md-sys-color-outline: #74777f;
+  --md-sys-color-outline-variant: #c4c6cf;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #2f3033;
+  --md-sys-color-inverse-on-surface: #f1f0f4;
+  --md-sys-color-inverse-primary: #a8c8ff;
+  --md-sys-color-surface-dim: #dad9dd;
+  --md-sys-color-surface-bright: #faf9fd;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f4f3f7;
+  --md-sys-color-surface-container: #eeedf1;
+  --md-sys-color-surface-container-high: #e9e7eb;
+  --md-sys-color-surface-container-highest: #e3e2e6
+}
+</style><link rel="stylesheet" href="assets/material-style.css"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">next-action</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>next-action</h2></div><div class="tsd-panel tsd-typography"><a id="md:next-action-beta" class="tsd-anchor"></a><h1><a href="#md:next-action-beta">next-action (beta)</a></h1><p>Provides a centralized way to call your server actions.</p>
+<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><pre><code class="language-bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">next-action</span>
+</code><button>Copy</button></pre>
+<pre><code class="language-bash"><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">next-action</span>
+</code><button>Copy</button></pre>
+<pre><code class="language-bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">next-action</span>
+</code><button>Copy</button></pre>
+<a id="md:why" class="tsd-anchor"></a><h2><a href="#md:why">Why?</a></h2><p>Server actions are great but have some caveats on NextJS:</p>
+<ul>
+<li>Cannot be intercepted by middlewares</li>
+<li>Cannot throw errors</li>
+</ul>
+<p>And as any other API endpoint the user input needs to be validated.</p>
+<p><code>next-action</code> provide an API to easily validate, throw errors and add middlewares to your server actions.</p>
+<a id="md:table-of-contents" class="tsd-anchor"></a><h2><a href="#md:table-of-contents">Table of contents</a></h2><ul>
+<li><a href="#md:usage">Usage</a></li>
+<li><a href="#md:using-form-actions">Using Form Actions</a></li>
+<li><a href="#md:throwing-errors">Throwing Errors</a></li>
+<li><a href="#md:map-errors">Map errors</a></li>
+<li><a href="#md:context">Context</a></li>
+<li><a href="#md:middlewares">Middleware</a><ul>
+<li><a href="#md:before-server-action">Before server action</a></li>
+<li><a href="#md:after-server-action">After server action</a></li>
+</ul>
+</li>
+<li><a href="#md:testing">Testing Server Actions</a></li>
+</ul>
+<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><pre><code class="language-ts"><span class="hl-3">// lib/action.ts</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">createServerActionProvider</span><span class="hl-1"> } </span><span class="hl-2">&quot;next-action/server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-5">publicAction</span><span class="hl-1"> = </span><span class="hl-5">createServerActionProvider</span><span class="hl-1">();</span>
+</code><button>Copy</button></pre>
+<pre><code class="language-ts"><span class="hl-3">// lib/actions/api.ts</span><br/><span class="hl-2">&quot;use server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">// Any object that have a `parse` method can be used as validator</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">schema</span><span class="hl-1"> = </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">object</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">title:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">  </span><span class="hl-5">content:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">createPost</span><span class="hl-1"> = </span><span class="hl-0">publicAction</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-6">async</span><span class="hl-1"> ({ </span><span class="hl-5">input</span><span class="hl-1"> }) </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">postId</span><span class="hl-1"> = </span><span class="hl-5">crypto</span><span class="hl-1">.</span><span class="hl-0">randomUUID</span><span class="hl-1">();</span><br/><span class="hl-1">    </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">db</span><span class="hl-1">.</span><span class="hl-0">insert</span><span class="hl-1">(</span><span class="hl-5">posts</span><span class="hl-1">).</span><span class="hl-0">values</span><span class="hl-1">({ </span><span class="hl-5">postId</span><span class="hl-1">, ...</span><span class="hl-5">input</span><span class="hl-1"> });</span><br/><span class="hl-1">    </span><span class="hl-4">return</span><span class="hl-1"> { </span><span class="hl-5">postId</span><span class="hl-1"> };</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-5">validate:</span><span class="hl-1"> </span><span class="hl-5">schema</span><span class="hl-1">,</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+<p>You can call the <code>createPost</code> directly client and server side as any other server action.
+Client side you can also use <code>useAction</code> or <code>useFormAction</code> which allow you to track the <code>loading</code>, <code>error</code> and <code>success</code> state
+of the server action.</p>
+<pre><code class="language-tsx"><span class="hl-3">// app/create-post/page.tsx</span><br/><span class="hl-2">&quot;use client&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">useAction</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;next-action/react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-4">default</span><span class="hl-1"> </span><span class="hl-6">function</span><span class="hl-1"> </span><span class="hl-0">CreatePostPage</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-6">const</span><span class="hl-1"> { </span><span class="hl-7">execute</span><span class="hl-1">, </span><span class="hl-7">data</span><span class="hl-1">, </span><span class="hl-7">error</span><span class="hl-1">, </span><span class="hl-7">status</span><span class="hl-1">, </span><span class="hl-7">isExecuting</span><span class="hl-1">, </span><span class="hl-7">isError</span><span class="hl-1">, </span><span class="hl-7">isSuccess</span><span class="hl-1"> } = </span><span class="hl-0">useAction</span><span class="hl-1">(</span><span class="hl-5">createPost</span><span class="hl-1">, {</span><br/><span class="hl-1">    </span><span class="hl-0">onSuccess</span><span class="hl-1">(</span><span class="hl-5">data</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-3">//</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-0">onError</span><span class="hl-1">(</span><span class="hl-5">error</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-3">//</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-0">onSettled</span><span class="hl-1">(</span><span class="hl-5">result</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-3">//</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  });</span><br/><br/><span class="hl-1">  </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-8">&lt;&gt;</span><span class="hl-6">{</span><span class="hl-3">/* Create post form */</span><span class="hl-6">}</span><span class="hl-8">&lt;/&gt;</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:using-form-actions" class="tsd-anchor"></a><h2><a href="#md:using-form-actions">Using form actions</a></h2><p>You can also define and call server actions that accept a form, you define the actions using <code>formAction</code> on your action provider.</p>
+<pre><code class="language-ts"><span class="hl-2">&#39;use server&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">schema</span><span class="hl-1"> = </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">object</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">postId:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">()</span><br/><span class="hl-1">  </span><span class="hl-5">title</span><span class="hl-1">: </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">  </span><span class="hl-5">content:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">updatePost</span><span class="hl-1"> = </span><span class="hl-5">publicAction</span><span class="hl-1">.</span><span class="hl-0">formAction</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-6">async</span><span class="hl-1"> ({ </span><span class="hl-5">input</span><span class="hl-1"> }) </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">db</span><span class="hl-1">.</span><span class="hl-0">update</span><span class="hl-1">(</span><span class="hl-5">posts</span><span class="hl-1">)</span><br/><span class="hl-1">      .</span><span class="hl-0">values</span><span class="hl-1">({ </span><span class="hl-5">postId</span><span class="hl-1">, ...</span><span class="hl-5">input</span><span class="hl-1"> })</span><br/><span class="hl-1">      .</span><span class="hl-0">where</span><span class="hl-1">(</span><span class="hl-0">eq</span><span class="hl-1">(</span><span class="hl-5">input</span><span class="hl-1">.</span><span class="hl-5">postId</span><span class="hl-1">, </span><span class="hl-5">posts</span><span class="hl-1">.</span><span class="hl-5">id</span><span class="hl-1">))</span><br/><br/><span class="hl-1">    </span><span class="hl-4">return</span><span class="hl-1"> { </span><span class="hl-5">postId</span><span class="hl-1"> };</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-5">validate:</span><span class="hl-1"> </span><span class="hl-5">schema</span><span class="hl-1">,</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+<p><code>updatePost</code> will have the form: <code>(input: FormData) =&gt; ActionResult&lt;T&gt;</code>, so you can use it in any form.</p>
+<pre><code class="language-tsx"><span class="hl-3">// app/update-post/page.tsx</span><br/><span class="hl-2">&quot;use client&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-4">default</span><span class="hl-1"> </span><span class="hl-6">function</span><span class="hl-1"> </span><span class="hl-0">UpdatePostPage</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-4">return</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-8">&lt;</span><span class="hl-9">form</span><span class="hl-1"> </span><span class="hl-10">action</span><span class="hl-1">=</span><span class="hl-6">{</span><span class="hl-5">updatePost</span><span class="hl-6">}</span><span class="hl-8">&gt;</span><br/><span class="hl-1">      </span><span class="hl-8">&lt;</span><span class="hl-9">input</span><span class="hl-1"> </span><span class="hl-10">name</span><span class="hl-1">=</span><span class="hl-2">&quot;postId&quot;</span><span class="hl-1"> </span><span class="hl-8">/&gt;</span><br/><span class="hl-1">      </span><span class="hl-8">&lt;</span><span class="hl-9">input</span><span class="hl-1"> </span><span class="hl-10">name</span><span class="hl-1">=</span><span class="hl-2">&quot;title&quot;</span><span class="hl-1"> </span><span class="hl-8">/&gt;</span><br/><span class="hl-1">      </span><span class="hl-8">&lt;</span><span class="hl-9">input</span><span class="hl-1"> </span><span class="hl-10">name</span><span class="hl-1">=</span><span class="hl-2">&quot;content&quot;</span><span class="hl-1"> </span><span class="hl-8">/&gt;</span><br/><span class="hl-1">    </span><span class="hl-8">&lt;/</span><span class="hl-9">form</span><span class="hl-8">&gt;</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<p>To track the progress of a form action client side you use the <code>useFormAction</code> hook.</p>
+<pre><code class="language-ts"><span class="hl-6">const</span><span class="hl-1"> { </span><span class="hl-7">action</span><span class="hl-1">, </span><span class="hl-7">data</span><span class="hl-1">, </span><span class="hl-7">error</span><span class="hl-1">, </span><span class="hl-7">status</span><span class="hl-1">, </span><span class="hl-7">isExecuting</span><span class="hl-1">, </span><span class="hl-7">isError</span><span class="hl-1">, </span><span class="hl-7">isSuccess</span><span class="hl-1"> } = </span><span class="hl-0">useFormAction</span><span class="hl-1">(</span><span class="hl-5">updatePost</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-0">onSuccess</span><span class="hl-1">(</span><span class="hl-5">data</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-3">//</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-0">onError</span><span class="hl-1">(</span><span class="hl-5">error</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-3">//</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-0">onSettled</span><span class="hl-1">(</span><span class="hl-5">result</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-3">//</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>Then you can use the returned <code>action</code> on your <code>&lt;form action={...}&gt;</code>.</p>
+<a id="md:throwing-errors" class="tsd-anchor"></a><h2><a href="#md:throwing-errors">Throwing errors</a></h2><p>You can throw any error in your server actions, those errors will be send to the client on the result.</p>
+<pre><code class="language-ts"><span class="hl-3">// lib/actions/api.ts</span><br/><span class="hl-2">&quot;use server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">ActionError</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;next-action&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">deletePost</span><span class="hl-1"> = </span><span class="hl-0">publicAction</span><span class="hl-1">(</span><span class="hl-6">async</span><span class="hl-1"> ({ </span><span class="hl-5">input</span><span class="hl-1"> }) </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">throw</span><span class="hl-1"> </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">ActionError</span><span class="hl-1">(</span><span class="hl-2">&quot;Failed to delete post&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>We recommend using <code>ActionError</code> for errors you want the client to receive.</p>
+<a id="md:map-errors" class="tsd-anchor"></a><h2><a href="#md:map-errors">Map errors</a></h2><p>For sending the errors to the client you need to map the error to other type, by default we map it to <code>string</code>,
+you map your errors in the <code>createServerActionProvider</code>.</p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">defaultErrorMapper</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;next-action/utils&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">publicAction</span><span class="hl-1"> = </span><span class="hl-0">createServerActionProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">mapError</span><span class="hl-1">(</span><span class="hl-5">err</span><span class="hl-1">: </span><span class="hl-11">any</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-3">// You need to manage manually your validation errors</span><br/><span class="hl-1">    </span><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">err</span><span class="hl-1"> </span><span class="hl-6">instanceof</span><span class="hl-1"> </span><span class="hl-11">ZodError</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-5">err</span><span class="hl-1">.</span><span class="hl-5">issues</span><span class="hl-1">.</span><span class="hl-0">map</span><span class="hl-1">((</span><span class="hl-5">issue</span><span class="hl-1">) </span><span class="hl-6">=&gt;</span><span class="hl-1"> </span><span class="hl-2">`</span><span class="hl-6">${</span><span class="hl-5">issue</span><span class="hl-12">.</span><span class="hl-5">path</span><span class="hl-6">}</span><span class="hl-2">: </span><span class="hl-6">${</span><span class="hl-5">issue</span><span class="hl-12">.</span><span class="hl-5">message</span><span class="hl-6">}</span><span class="hl-2">`</span><span class="hl-1">).</span><span class="hl-0">join</span><span class="hl-1">(</span><span class="hl-2">&quot;</span><span class="hl-13">\n</span><span class="hl-2">&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">    }</span><br/><br/><span class="hl-1">    </span><span class="hl-3">// Use the default mappinh to string</span><br/><span class="hl-1">    </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-0">defaultErrorMapper</span><span class="hl-1">(</span><span class="hl-5">err</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<a id="md:context" class="tsd-anchor"></a><h2><a href="#md:context">Context</a></h2><p>You can also set a context that all your server actions will have access to.</p>
+<pre><code class="language-ts"><span class="hl-3">// lib/action.ts</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">createServerActionProvider</span><span class="hl-1"> } </span><span class="hl-2">&quot;next-action/server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-5">action</span><span class="hl-1"> = </span><span class="hl-5">createServerActionProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">context</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-5">return</span><span class="hl-1"> { </span><span class="hl-5">db</span><span class="hl-1"> }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>The context will be created each time the server action is called, after that you can access the context values on your server actions.</p>
+<pre><code class="language-ts"><span class="hl-3">// lib/actions/api.ts</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">schema</span><span class="hl-1"> = </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">object</span><span class="hl-1">({ </span><span class="hl-5">postId:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">() });</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">deletePost</span><span class="hl-1"> = </span><span class="hl-0">action</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-6">async</span><span class="hl-1"> ({ </span><span class="hl-5">input</span><span class="hl-1">, </span><span class="hl-5">context</span><span class="hl-1"> }) </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-5">context</span><span class="hl-1">.</span><span class="hl-5">db</span><span class="hl-1">.</span><span class="hl-0">delete</span><span class="hl-1">(</span><span class="hl-5">posts</span><span class="hl-1">).</span><span class="hl-0">where</span><span class="hl-1">(</span><span class="hl-0">eq</span><span class="hl-1">(</span><span class="hl-5">input</span><span class="hl-1">.</span><span class="hl-5">postId</span><span class="hl-1">, </span><span class="hl-5">posts</span><span class="hl-1">.</span><span class="hl-5">id</span><span class="hl-1">));</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-5">validator:</span><span class="hl-1"> </span><span class="hl-5">schema</span><span class="hl-1">,</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+<a id="md:middlewares" class="tsd-anchor"></a><h2><a href="#md:middlewares">Middlewares</a></h2><p>You can run a middleware before and after running your server actions.</p>
+<a id="md:before-server-action" class="tsd-anchor"></a><h3><a href="#md:before-server-action">Before server action</a></h3><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">createServerActionProvider</span><span class="hl-1"> } </span><span class="hl-2">&quot;next-action/server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-5">authAction</span><span class="hl-1"> = </span><span class="hl-5">createServerActionProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-5">onBeforeExecute</span><span class="hl-1">({ </span><span class="hl-5">input</span><span class="hl-1">, </span><span class="hl-5">context</span><span class="hl-1">  }) {</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-5">session</span><span class="hl-1"> = </span><span class="hl-5">await</span><span class="hl-1"> </span><span class="hl-5">getSession</span><span class="hl-1">();</span><br/><br/><span class="hl-1">    </span><span class="hl-5">if</span><span class="hl-1"> (!</span><span class="hl-5">session</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-5">throw</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-5">ActionError</span><span class="hl-1">(&quot;</span><span class="hl-5">Unauthorized</span><span class="hl-1">&quot;)</span><br/><span class="hl-1">    }</span><br/><br/><span class="hl-1">    </span><span class="hl-5">return</span><span class="hl-1"> { ...</span><span class="hl-5">context</span><span class="hl-1">, </span><span class="hl-5">session</span><span class="hl-1"> }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>You can access the new context on all your actions.</p>
+<pre><code class="language-ts"><span class="hl-3">// lib/actions/api.ts</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">schema</span><span class="hl-1"> = </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">object</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">postId:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">  </span><span class="hl-5">title:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">  </span><span class="hl-5">content:</span><span class="hl-1"> </span><span class="hl-5">z</span><span class="hl-1">.</span><span class="hl-0">string</span><span class="hl-1">(),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">createPost</span><span class="hl-1"> = </span><span class="hl-0">authAction</span><span class="hl-1">(</span><span class="hl-6">async</span><span class="hl-1"> ({ </span><span class="hl-5">input</span><span class="hl-1">, </span><span class="hl-5">context</span><span class="hl-1"> }) </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">db</span><span class="hl-1">.</span><span class="hl-0">insert</span><span class="hl-1">(</span><span class="hl-5">users</span><span class="hl-1">).</span><span class="hl-0">values</span><span class="hl-1">({ ...</span><span class="hl-5">input</span><span class="hl-1">, </span><span class="hl-5">userId:</span><span class="hl-1"> </span><span class="hl-5">context</span><span class="hl-1">.</span><span class="hl-5">session</span><span class="hl-1">.</span><span class="hl-5">userId</span><span class="hl-1"> });</span><br/><span class="hl-1">}, {</span><br/><span class="hl-1">  </span><span class="hl-5">validator:</span><br/><span class="hl-1">})</span>
+</code><button>Copy</button></pre>
+<a id="md:after-server-action" class="tsd-anchor"></a><h3><a href="#md:after-server-action">After server action</a></h3><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">createServerActionProvider</span><span class="hl-1"> } </span><span class="hl-2">&quot;next-action/server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-5">authAction</span><span class="hl-1"> = </span><span class="hl-5">createServerActionProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">onBeforeExecute</span><span class="hl-1">({ </span><span class="hl-5">input</span><span class="hl-1"> }) {</span><br/><span class="hl-1">    </span><span class="hl-5">return</span><span class="hl-1"> { </span><span class="hl-5">startTime</span><span class="hl-1">: </span><span class="hl-5">Date</span><span class="hl-1">.</span><span class="hl-5">now</span><span class="hl-1">() }</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-5">onAfterExecute</span><span class="hl-1">({ </span><span class="hl-5">context</span><span class="hl-1"> }) {</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-5">elapsed</span><span class="hl-1"> = </span><span class="hl-5">Date</span><span class="hl-1">.</span><span class="hl-5">now</span><span class="hl-1">() - </span><span class="hl-5">context</span><span class="hl-1">.</span><span class="hl-5">startTime</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(`</span><span class="hl-5">Server</span><span class="hl-1"> </span><span class="hl-5">action</span><span class="hl-1"> </span><span class="hl-5">took</span><span class="hl-1"> </span><span class="hl-5">$</span><span class="hl-1">{</span><span class="hl-5">elapsed</span><span class="hl-1">}</span><span class="hl-0">ms</span><span class="hl-2">`);</span><br/><span class="hl-2">  }</span><br/><span class="hl-2">});</span>
+</code><button>Copy</button></pre>
+<a id="md:testing-server-actions" class="tsd-anchor"></a><h2><a href="#md:testing-server-actions">Testing Server Actions</a></h2><p>Currently for test server actions is necessary to expose them as API endpoints, we serialize and deserialize the values
+in a similar way react does to ensure the same behavior.</p>
+<pre><code class="language-ts"><span class="hl-3">// api/testactions/[[...testaction]]/route.ts</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">exposeServerActions</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;next-action/testing/server&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">handler</span><span class="hl-1"> = </span><span class="hl-0">exposeServerActions</span><span class="hl-1">({ </span><span class="hl-5">createPost</span><span class="hl-1"> });</span><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">type</span><span class="hl-1"> </span><span class="hl-11">TestActions</span><span class="hl-1"> = </span><span class="hl-6">typeof</span><span class="hl-1"> </span><span class="hl-5">handler</span><span class="hl-1">.</span><span class="hl-5">actions</span><span class="hl-1">;</span><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">POST</span><span class="hl-1"> = </span><span class="hl-5">handler</span><span class="hl-1">;</span>
+</code><button>Copy</button></pre>
+<blockquote>
+<p>You should set the <code>EXPOSE_SERVER_ACTIONS</code> environment variable to expose the endpoints.</p>
+</blockquote>
+<p>And on your testing side</p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">createServerActionClient</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;next-action/testing/client&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-0">beforeAll</span><span class="hl-1">(() </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">// Start your nextjs server</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">test</span><span class="hl-1">(</span><span class="hl-2">&quot;Should create post&quot;</span><span class="hl-1">, </span><span class="hl-6">async</span><span class="hl-1"> () </span><span class="hl-6">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">client</span><span class="hl-1"> = </span><span class="hl-0">createServerActionClient</span><span class="hl-1">&lt;</span><span class="hl-11">TestActions</span><span class="hl-1">&gt;(</span><span class="hl-2">&quot;http://localhost:3000/api/testactions&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">result</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">client</span><span class="hl-1">.</span><span class="hl-0">createPost</span><span class="hl-1">({ </span><span class="hl-5">title:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post 1&quot;</span><span class="hl-1">, </span><span class="hl-5">content:</span><span class="hl-1"> </span><span class="hl-2">&quot;This is my first post&quot;</span><span class="hl-1"> });</span><br/><span class="hl-1">  </span><span class="hl-0">expect</span><span class="hl-1">(</span><span class="hl-5">result</span><span class="hl-1">.</span><span class="hl-5">success</span><span class="hl-1">).</span><span class="hl-0">toBeTruthy</span><span class="hl-1">();</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<a id="md:see-also-these-libraries-that-inspired-next-action" class="tsd-anchor"></a><h2><a href="#md:see-also-these-libraries-that-inspired-next-action">See also these libraries that inspired <code>next-action</code></a></h2><ul>
+<li><a href="https://github.com/TheEdoRan/next-safe-action">https://github.com/TheEdoRan/next-safe-action</a></li>
+<li><a href="https://github.com/trpc/trpc">https://github.com/trpc/trpc</a></li>
+</ul>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:next-action-beta"><span>next-<wbr/>action (beta)</span></a><ul><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:why"><span>Why?</span></a></li><li><a href="#md:table-of-contents"><span>Table of contents</span></a></li><li><a href="#md:usage"><span>Usage</span></a></li><li><a href="#md:using-form-actions"><span>Using form actions</span></a></li><li><a href="#md:throwing-errors"><span>Throwing errors</span></a></li><li><a href="#md:map-errors"><span>Map errors</span></a></li><li><a href="#md:context"><span>Context</span></a></li><li><a href="#md:middlewares"><span>Middlewares</span></a></li><li><ul><li><a href="#md:before-server-action"><span>Before server action</span></a></li><li><a href="#md:after-server-action"><span>After server action</span></a></li></ul></li><li><a href="#md:testing-server-actions"><span>Testing <wbr/>Server <wbr/>Actions</span></a></li><li><a href="#md:see-also-these-libraries-that-inspired-next-action"><span>See also these libraries that inspired next-<wbr/>action</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>next-action</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div><script>
+          try {
+            const generateLinkElement = document.querySelector(".tsd-generator a");
+            const link = document.createElement("a");
+            Object.assign(link, {
+              href: "https://github.com/dmnsgn/typedoc-material-theme",
+              target: "_blank",
+              rel: "noreferrer",
+              innerText: "typedoc-material-theme."
+            });
+            generateLinkElement.insertAdjacentElement("afterend", link);
+            generateLinkElement.insertAdjacentText("afterend", " with ");
+          } catch (error) {
+
+          }
+        </script></body></html>
