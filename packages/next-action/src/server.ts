@@ -6,6 +6,8 @@ import { defaultErrorMapper } from "./utils";
 
 /**
  * Validate the input of a server action.
+ * 
+ * @typeParam T type of the value to parse.
  */
 export type Validator<T> = {
   /**
@@ -43,6 +45,10 @@ type CreateProviderContext<TContext> =
 
 /**
  * Options to create the server action provider.
+ * 
+ * @typeParam TError type used for the errors.
+ * @typeParam TContext type of the context passed to the server actions.
+ * @typeParam TCtx type of the action if converted by a middleware. 
  */
 export type CreateProviderOptions<TError, TContext, TCtx> = CreateProviderContext<TContext> & {
   /**
@@ -67,6 +73,9 @@ export type CreateProviderOptions<TError, TContext, TCtx> = CreateProviderContex
 
 /**
  * Represents the output of a server action, this can be either a success or failure.
+ * 
+ * @typeParam TResult type of the server action return type.
+ * @typeParam TError type of the error.
  */
 export type ActionResult<TResult, TError> = Promise<
   { success: true; data: TResult } | { success: false; error: TError }
