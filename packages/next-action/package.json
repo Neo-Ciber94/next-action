@@ -1,5 +1,6 @@
 {
   "name": "next-action",
+  "description": "Provides a mechanism for validate and execute server actions",
   "version": "0.0.1-beta3",
   "scripts": {
     "build": "tsup",
@@ -8,8 +9,12 @@
     "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
-    "prepublish": "pnpm run typecheck && pnpm run build",
-    "copy:readme": "tsx ./scripts/copyReadme.mts"
+    "copy:readme": "tsx ./scripts/copyReadme.mts",
+    "prepublish": "pnpm run typecheck && pnpm copy:readme && pnpm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neo-Ciber94/next-action"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
