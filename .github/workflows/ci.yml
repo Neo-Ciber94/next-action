@@ -57,6 +57,7 @@ jobs:
         run: cd packages/next-action && pnpm build:docs
 
       - name: Deploy docs
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          folder: packages/next-action/docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: packages/next-action/docs
