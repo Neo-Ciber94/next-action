@@ -27,6 +27,10 @@ yarn add next-action
 pnpm add next-action
 ```
 
+```bash
+bun add next-action
+```
+
 ## API Docs
 
 https://neo-ciber94.github.io/next-action
