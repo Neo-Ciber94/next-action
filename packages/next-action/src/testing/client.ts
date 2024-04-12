@@ -3,7 +3,13 @@ import { type ActionRecord } from "./server";
 import { encodeAsync } from "seria/form-data";
 import { parseFromStream } from "seria";
 
+/**
+ * Options for the client.
+ */
 type CreateActionClientOptions = {
+  /**
+   * Cookies to pass in each request.
+   */
   cookies: Record<string, string>;
 };
 
@@ -11,6 +17,12 @@ type ServerActionClient<T extends ActionRecord> = {
   [K in keyof T]: (...args: Parameters<T[K]>) => ReturnType<T[K]>;
 };
 
+/**
+ * Create a client to call your server actions.
+ * @param url The base URL to call your server actions.
+ * @param opts Options for your client.
+ * @returns The client.
+ */
 export function createServerActionClient<T extends ActionRecord = never>(
   url: string,
   opts?: CreateActionClientOptions,

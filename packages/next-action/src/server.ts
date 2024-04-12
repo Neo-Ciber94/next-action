@@ -34,6 +34,9 @@ export type ActionFunction<T, TResult, TCtx> = undefined extends T
   ? (params: { input?: T; context: TCtx }) => Promise<TResult>
   : (params: { input: T; context: TCtx }) => Promise<TResult>;
 
+/**
+ * A context to pass to the actions.
+ */
 type CreateProviderContext<TContext> =
   | { context?: void }
   | { context: () => TContext | Promise<TContext> };

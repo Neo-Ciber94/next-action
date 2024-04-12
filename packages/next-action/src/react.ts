@@ -5,6 +5,9 @@ import { useCallback, useMemo, useState } from "react";
 
 type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
 
+/**
+ * Represent a server action.
+ */
 type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
 
 /**
@@ -36,6 +39,9 @@ export function useAction<T, TResult, TError = unknown>(
   fn: Action<T, TResult, TError>,
   options?: ActionOptions<TResult, TError>,
 ) {
+  /**
+   * Input arguments.
+   */
   type TArgs = [undefined] extends Parameters<typeof fn> ? [input?: T | undefined] : [input: T];
 
   const { execute: callAction, ...rest } = useCallAction(fn, options);
