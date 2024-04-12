@@ -38,8 +38,10 @@ export type ActionFunction<T, TResult, TCtx> = undefined extends T
 
 /**
  * A context to pass to the actions.
+ * 
+ * @internal
  */
-type CreateProviderContext<TContext> =
+export type CreateProviderContext<TContext> =
   | { context?: void }
   | { context: () => TContext | Promise<TContext> };
 
@@ -88,6 +90,9 @@ export type ActionResult<TResult, TError> = Promise<
 export function createServerActionProvider<TError = string, TContext = {}, TCtx = TContext>(
   options?: CreateProviderOptions<TError, TContext, TCtx>,
 ) {
+  /**
+   * The server action context.
+   */
   type TNextContext = void extends TCtx ? TContext : TCtx;
 
   const {

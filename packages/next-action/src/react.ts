@@ -3,17 +3,24 @@
 import type { ActionResult } from "./server";
 import { useCallback, useMemo, useState } from "react";
 
-type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
+/**
+ * @internal
+ */
+export type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>>;
 
 /**
  * Represent a server action.
+ * 
+ * @internal
  */
-type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
+export type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
 
 /**
  * Additional options.
+ * 
+ * @internal
  */
-type ActionOptions<TResult, TError> = {
+export type ActionOptions<TResult, TError> = {
   /**
    * Called when an error ocurrs.
    */

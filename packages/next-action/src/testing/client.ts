@@ -5,15 +5,20 @@ import { parseFromStream } from "seria";
 
 /**
  * Options for the client.
+ * 
+ * @internal
  */
-type CreateActionClientOptions = {
+export type CreateActionClientOptions = {
   /**
    * Cookies to pass in each request.
    */
   cookies: Record<string, string>;
 };
 
-type ServerActionClient<T extends ActionRecord> = {
+/**
+ * @internal
+ */
+export type ServerActionClient<T extends ActionRecord> = {
   [K in keyof T]: (...args: Parameters<T[K]>) => ReturnType<T[K]>;
 };
 
