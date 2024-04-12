@@ -89,6 +89,7 @@ You can call the `createPost` directly client and server side as any other serve
 Client side you can also use `useAction` or `useFormAction` which allow you to track the `loading`, `error` and `success` state
 of the server action.
 
+<!-- prettier-ignore -->
 ```tsx
 // app/create-post/page.tsx
 "use client";
@@ -96,17 +97,26 @@ of the server action.
 import { useAction } from "next-action/react";
 
 export default function CreatePostPage() {
-  const { execute, data, error, status, isExecuting, isError, isSuccess } = useAction(createPost, {
-    onSuccess(data) {
-      //
-    },
-    onError(error) {
-      //
-    },
-    onSettled(result) {
-      //
-    },
-  });
+  const { 
+      execute, 
+      data, 
+      error, 
+      status, 
+      isExecuting, 
+      isError, 
+      isSuccess 
+    } = useAction(createPost, {
+      onSuccess(data) {
+        // success
+      },
+      onError(error) {
+        // error
+      },
+      onSettled(result) {
+        // completed
+      },
+    }
+  );
 
   return <>{/* Create post form */}</>;
 }
@@ -158,18 +168,28 @@ export default function UpdatePostPage() {
 
 To track the progress of a form action client side you use the `useFormAction` hook.
 
+<!-- prettier-ignore -->
 ```ts
-const { action, data, error, status, isExecuting, isError, isSuccess } = useFormAction(updatePost, {
-  onSuccess(data) {
-    //
-  },
-  onError(error) {
-    //
-  },
-  onSettled(result) {
-    //
-  },
-});
+const { 
+      action, 
+      data, 
+      error, 
+      status, 
+      isExecuting, 
+      isError, 
+      isSuccess 
+    } = useFormAction(updatePost, {
+    onSuccess(data) {
+      // success
+    },
+    onError(error) {
+      // error
+    },
+    onSettled(result) {
+      // completed
+    },
+  }
+);
 ```
 
 Then you can use the returned `action` on your `<form action={...}>`.
