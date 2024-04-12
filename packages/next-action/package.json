@@ -2,6 +2,7 @@
   "name": "next-action",
   "description": "Provides a mechanism for validate and execute server actions",
   "version": "0.0.1-beta3",
+  "license": "MIT",
   "scripts": {
     "build": "tsup",
     "build:docs": "typedoc",
@@ -16,6 +17,7 @@
     "type": "git",
     "url": "https://github.com/Neo-Ciber94/next-action"
   },
+  "homepage": "https://neo-ciber94.github.io/next-action",
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.2",

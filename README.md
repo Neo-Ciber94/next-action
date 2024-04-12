@@ -1,4 +1,15 @@
-# next-action (beta)
+# next-action
+
+[![CI][ci-badge]][ci-link] [![npm version][npm-badge]][npm-link] [![Bundle Size][size-badge]][size-link] [![docs][docs-badge]][docs-link]
+
+[ci-badge]: https://github.com/Neo-Ciber94/next-action/actions/workflows/ci.yml/badge.svg
+[ci-link]: https://github.com/Neo-Ciber94/next-action/actions/workflows/ci.yml
+[npm-badge]: https://badge.fury.io/js/next-action.svg
+[npm-link]: https://badge.fury.io/js/next-action
+[size-badge]: https://pkg-size.dev/badge/bundle/54
+[size-link]: https://pkg-size.dev/next-action
+[docs-badge]: https://img.shields.io/badge/next_action-docs-blue
+[docs-link]: https://neo-ciber94.github.io/next-action/
 
 Provides a centralized way to call your server actions.
 
@@ -15,6 +26,10 @@ yarn add next-action
 ```bash
 pnpm add next-action
 ```
+
+## API Docs
+
+https://neo-ciber94.github.io/next-action
 
 ## Why?
 
