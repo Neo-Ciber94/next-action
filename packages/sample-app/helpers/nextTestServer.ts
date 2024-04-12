@@ -6,12 +6,14 @@ export interface NextTestServer {
   stop(): void;
 }
 
+type OnReadyParams = { host: string; port: number };
+
 type NextTestServerOptions = {
   host?: string;
   port?: number;
   envVars?: Record<string, string>;
   isProd?: boolean;
-  onReady?: () => Promise<void> | void;
+  onReady?: (params: OnReadyParams) => Promise<void> | void;
   onStdout?: (data: string) => void;
   onStderr?: (data: string) => void;
 };
@@ -38,7 +40,7 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
     },
   });
 
-  ["SIGINT", "exit", "SIGTERM", "SIGHUP", "unhandledRejection"].forEach((event) => {
+  ["SIGINT", "SIGKILL", "exit", "SIGTERM", "SIGHUP", "unhandledRejection"].forEach((event) => {
     process.on(event, () => {
       childProcess.kill();
     });
@@ -57,11 +59,11 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
         reject(new Error(`Failed to start test server: ${data}`));
       }
 
-      onStderr?.(data);
+      onStderr(data);
     });
 
     childProcess.stdout.on("data", (data) => {
-      onStdout?.(data);
+      onStdout(data);
 
       if (!init) {
         init = true;
@@ -84,10 +86,14 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
 
               isSettled = true;
 
-              await Promise.all([
-                Promise.resolve(onReady?.()),
-                Promise.resolve(resolve(nextServer)),
-              ]);
+              try {
+                await Promise.all([
+                  Promise.resolve(onReady?.({ host, port })),
+                  Promise.resolve(resolve(nextServer)),
+                ]);
+              } catch (err) {
+                logErrors(err);
+              }
             } else {
               childProcess.kill();
               reject(new Error("Failed to start next dev server"));
@@ -100,6 +106,21 @@ export function startNextTestServer(opts?: NextTestServerOptions) {
       }
     });
   });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function logErrors(err: any) {
+  if (err instanceof AggregateError) {
+    err.errors.forEach(console.error);
+  } else {
+    console.error(err);
+
+    if (err instanceof Error) {
+      if (err.cause instanceof AggregateError) {
+        err.cause.errors.forEach(console.error);
+      }
+    }
+  }
 }
 
 type WaitForConnectionOptions = {

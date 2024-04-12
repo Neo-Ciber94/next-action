@@ -17,7 +17,6 @@ beforeAll(async () => {
       EXPOSE_SERVER_ACTIONS: "1",
       NO_SEED_DATABASE: "1",
     },
-    onStdout: () => {},
   });
 }, 120_000);
 
@@ -40,39 +39,41 @@ describe("MediaWatch List", () => {
   test("Should call test action", { timeout: 60_000 }, async () => {
     await expect(client.getWatchMediaList()).resolves.toStrictEqual([]);
 
-    await client.createWatchMedia({
+    // Create
+    const ret1 = await client.createWatchMedia({
       title: "Title 1",
       watched: true,
       releaseDate: new Date(2024, 3, 6),
       genres: new Set(["genre1", "genre2"]),
       type: "movie",
       notes: "Notes",
-      image: await (async () => {
-        const file = await readArtifact("image.jpg");
-        const formData = new FormData();
-        formData.set("image", file);
-        return formData;
-      })(),
+      image: await readArtifactAsFormData("image", "image.jpg"),
     });
 
-    const watchMedia = await client.createWatchMedia({
+    expect(ret1).toEqual({
+      success: true,
+      data: expect.objectContaining({ watched: true, title: "Title 1" }),
+    });
+
+    const ret2 = await client.createWatchMedia({
       title: "Title 2",
       watched: false,
       releaseDate: new Date(2024, 3, 1),
       genres: new Set(["genre1", "genre3"]),
       type: "series",
       notes: "Notes 2",
-      image: await (async () => {
-        const file = await readArtifact("image.jpg");
-        const formData = new FormData();
-        formData.set("image", file);
-        return formData;
-      })(),
+      image: await readArtifactAsFormData("image", "image.jpg"),
+    });
+
+    expect(ret2).toEqual({
+      success: true,
+      data: expect.objectContaining({ watched: false, title: "Title 2" }),
     });
 
     await expect(client.getWatchMediaList()).resolves.toHaveLength(2);
-    const lastAddedId = watchMedia.success ? watchMedia.data.id : throwUnreachable();
+    const lastAddedId = ret2.success ? ret2.data.id : throwUnreachable();
 
+    // Update
     await expect(
       client.toggleWatched({
         watched: true,
@@ -81,13 +82,14 @@ describe("MediaWatch List", () => {
     ).resolves.toStrictEqual({ success: true, data: void 0 });
 
     await expect(client.getWatchMediaList()).resolves.toEqual([
-      { watched: true },
-      { watched: true },
+      expect.objectContaining({ watched: true }),
+      expect.objectContaining({ watched: true }),
     ]);
 
-    const deleteFormData = new FormData();
-    deleteFormData.set("id", lastAddedId);
-    await expect(client.deleteWatchMedia(deleteFormData)).resolves.toStrictEqual({
+    // Delete
+    await expect(
+      client.deleteWatchMedia(asFormData("mediaId", lastAddedId)),
+    ).resolves.toStrictEqual({
       success: true,
       data: true,
     });
@@ -102,6 +104,17 @@ async function readArtifact(fileName: string) {
   const buffer = await fs.readFile(filePath);
   const file = new File([buffer], fileName);
   return file;
+}
+
+async function readArtifactAsFormData(name: string, fileName: string) {
+  const file = await readArtifact(fileName);
+  return asFormData(name, file);
+}
+
+function asFormData(name: string, entry: FormDataEntryValue) {
+  const formData = new FormData();
+  formData.set(name, entry);
+  return formData;
 }
 
 async function removePublicImages() {
