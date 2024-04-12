@@ -11,7 +11,7 @@ type ServerActionClient<T extends ActionRecord> = {
   [K in keyof T]: (...args: Parameters<T[K]>) => ReturnType<T[K]>;
 };
 
-export function createServerActionClient<T extends ActionRecord>(
+export function createServerActionClient<T extends ActionRecord = never>(
   url: string,
   opts?: CreateActionClientOptions,
 ) {
