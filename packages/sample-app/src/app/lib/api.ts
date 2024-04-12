@@ -73,8 +73,9 @@ export const deleteWatchMedia = action.formAction(
 
     // Delete file
     if (watchMedia) {
-      if (!(await exists(watchMedia.imageUrl))) {
-        await fs.unlink(watchMedia.imageUrl);
+      const imagePath = path.join(process.cwd(), watchMedia.imageUrl);
+      if (await exists(imagePath)) {
+        await fs.unlink(imagePath);
       }
     }
 
