@@ -30,7 +30,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
     tsconfigRootDir: __dirname,
-    project: ["./packages/**/tsconfig.json"],
+    project: ["./packages/**/tsconfig.json", "./examples/**/tsconfig.json"],
   },
   plugins: ["@typescript-eslint", "react"],
   rules: {
