@@ -41,3 +41,7 @@ prisma/data
 # env
 .env
 .env.*
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
