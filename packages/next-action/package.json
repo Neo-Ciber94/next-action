@@ -3,6 +3,11 @@
   "description": "Provides a mechanism for validate and execute server actions",
   "version": "0.0.1-beta3",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neo-Ciber94/next-action"
+  },
+  "homepage": "https://neo-ciber94.github.io/next-action",
   "scripts": {
     "build": "tsup",
     "build:docs": "typedoc --favicon ./public/favicon.ico",
@@ -13,11 +18,6 @@
     "copy:readme": "tsx ./scripts/copyReadme.mts",
     "prepublish": "pnpm run typecheck && pnpm copy:readme && pnpm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Neo-Ciber94/next-action"
-  },
-  "homepage": "https://neo-ciber94.github.io/next-action",
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.2",
