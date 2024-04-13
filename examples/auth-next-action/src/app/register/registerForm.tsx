@@ -1,4 +1,5 @@
 "use client";
+import Spinner from "@/components/spinner";
 import { registerUser } from "@/lib/actions/auth.mutations";
 import { useFormAction } from "next-action/react";
 
@@ -51,9 +52,10 @@ export default function RegisterForm() {
       )}
       <button
         type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full bg-blue-500 flex justify-center flex-row px-2 items-center gap-2 hover:bg-blue-600 text-white font-bold py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         disabled={registerAction.isExecuting}
       >
+        {registerAction.isExecuting && <Spinner className="w-5 h-5" />}
         {registerAction.isExecuting ? "Loading..." : "Register"}
       </button>
     </form>
