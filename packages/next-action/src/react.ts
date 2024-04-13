@@ -1,7 +1,7 @@
 "use client";
 
 import type { ActionResult } from "./server";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 
 /**
  * @internal
@@ -10,14 +10,14 @@ export type ActionState<TResult, TError> = Awaited<ActionResult<TResult, TError>
 
 /**
  * Represent a server action.
- * 
+ *
  * @internal
  */
 export type Action<T, TResult, TError> = (input: T) => ActionResult<TResult, TError>;
 
 /**
  * Additional options.
- * 
+ *
  * @internal
  */
 export type ActionOptions<TResult, TError> = {
@@ -79,28 +79,32 @@ function useCallAction<TInput, TResult, TError = unknown>(
   options?: ActionOptions<TResult, TError>,
 ) {
   const { onError, onSuccess, onSettled } = options || {};
-  const [isExecuting, setIsExecuting] = useState(false);
+  const [isExecuting, startTransition] = useTransition();
   const [status, setStatus] = useState<ActionState<TResult, TError>>();
 
   const execute = useCallback(
     async (input: TInput) => {
-      setIsExecuting(true);
+      return new Promise<ActionState<TResult, TError>>((resolve, reject) => {
+        // @ts-expect-error server actions can be called in an async transition: https://react.dev/reference/react/use-server#calling-a-server-action-outside-of-form
+        startTransition(async () => {
+          try {
+            const result = await fn(input);
 
-      try {
-        const result = await fn(input);
+            if (result.success) {
+              onSuccess?.(result.data);
+            } else {
+              onError?.(result.error);
+            }
 
-        if (result.success) {
-          onSuccess?.(result.data);
-        } else {
-          onError?.(result.error);
-        }
-
-        onSettled?.(result);
-        setStatus(result);
-        return result;
-      } finally {
-        setIsExecuting(false);
-      }
+            onSettled?.(result);
+            setStatus(result);
+            resolve(result);
+          } catch (err) {
+            // This should never happen, errors should be returned in the server action result.
+            reject(err);
+          }
+        });
+      });
     },
     [fn, onError, onSuccess],
   );
