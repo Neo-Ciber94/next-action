@@ -2,6 +2,8 @@
 import { decode } from "seria/form-data";
 import { stringifyToStream } from "seria";
 import { ActionError } from "..";
+import { isRedirectError } from "next/dist/client/components/redirect";
+import { isNotFoundError } from "next/dist/client/components/not-found";
 
 const EXPOSE_SERVER_ACTIONS_ERROR =
   "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint";
@@ -10,7 +12,14 @@ export type ActionRecord = {
   [key: string]: (...args: any[]) => Promise<unknown>;
 };
 
-export function exposeServerActions<T extends ActionRecord>(actions: T) {
+type ExposeActionsOptions<TActions extends ActionRecord> = {
+  actions: TActions;
+};
+
+export function exposeServerActions<TActions extends ActionRecord>(
+  options: ExposeActionsOptions<TActions>,
+) {
+  const { actions } = options;
   const handler = async function (req: Request) {
     if (!process.env.EXPOSE_SERVER_ACTIONS) {
       console.error(EXPOSE_SERVER_ACTIONS_ERROR);
@@ -30,7 +39,7 @@ export function exposeServerActions<T extends ActionRecord>(actions: T) {
       return json({ message: "No action to call" }, { status: 404 });
     }
 
-    const action = actions[name as keyof T];
+    const action = actions[name as keyof TActions];
 
     if (!action) {
       return json({ message: `Server action '${name}' was not found` }, { status: 404 });
@@ -53,6 +62,36 @@ export function exposeServerActions<T extends ActionRecord>(actions: T) {
         },
       });
     } catch (err) {
+      if (isRedirectError(err)) {
+        const matches = /^NEXT_REDIRECT;(push|replace);([^;]+);(\d+);$/.exec(err.digest);
+
+        if (!matches) {
+          // We don't know where to redirect the user
+          return json(
+            { message: `Failed to redirect user` },
+            {
+              status: 500,
+              headers: {
+                "x-server-action-error": "1",
+              },
+            },
+          );
+        }
+
+        const location = matches[1];
+        const status = parseInt(matches[2]);
+        return new Response(null, {
+          status,
+          headers: {
+            location,
+          },
+        });
+      }
+
+      if (isNotFoundError(err)) {
+        return new Response(null, { status: 404 });
+      }
+
       console.error(err);
 
       if (err instanceof ActionError) {
@@ -71,7 +110,7 @@ export function exposeServerActions<T extends ActionRecord>(actions: T) {
     }
   };
 
-  handler.actions = actions as Readonly<T>;
+  handler.actions = actions as Readonly<TActions>;
   return handler;
 }
 

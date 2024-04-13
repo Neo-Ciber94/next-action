@@ -8,11 +8,13 @@ import {
 import { exposeServerActions } from "next-action/testing/server";
 
 const testActions = exposeServerActions({
-  getWatchMediaList,
-  createWatchMedia,
-  toggleWatched,
-  deleteWatchMedia,
-  deleteAllWatchMedia,
+  actions: {
+    getWatchMediaList,
+    createWatchMedia,
+    toggleWatched,
+    deleteWatchMedia,
+    deleteAllWatchMedia,
+  },
 });
 
 export type TestActions = typeof testActions.actions;
