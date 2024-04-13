@@ -24,6 +24,21 @@ export default function RegisterForm() {
         required
       />
       <input
+        name="secretNumber"
+        type="number"
+        min={-100}
+        max={100}
+        placeholder="Secret Number"
+        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500"
+        required
+      />
+
+      <label className="flex flex-row items-center gap-2 mb-4">
+        <input name="likesCoffee" type="checkbox" className="w-5 h-5 accent-blue-600" />
+        <span className="text-gray-400 font-medium"> Likes Coffee?</span>
+      </label>
+
+      <input
         name="password"
         type="password"
         placeholder="Password"

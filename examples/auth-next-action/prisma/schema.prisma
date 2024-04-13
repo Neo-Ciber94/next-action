@@ -11,8 +11,10 @@ datasource db {
 }
 
 model User {
-  id           Int    @id() @default(autoincrement())
-  username     String @unique
-  email        String @unique
+  id           Int     @id() @default(autoincrement())
+  username     String  @unique
+  email        String  @unique
   passwordHash String
+  likesCoffee  Boolean @default(false)
+  secretNumer  Int
 }

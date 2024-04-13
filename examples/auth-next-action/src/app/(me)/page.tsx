@@ -25,6 +25,12 @@ export default async function MePage() {
         <p className="mb-4">
           <span className="font-bold">Email:</span> {user.email}
         </p>
+        <p className="mb-4">
+          <span className="font-bold">Secret Number:</span> {user.secretNumer}
+        </p>
+        <p className="mb-4">
+          <span className="font-bold">Likes Coffee? </span> {user.likesCoffee ? "Yes" : "No"}
+        </p>
 
         <Link href="/update" className="text-blue-500 hover:underline mb-4 block">
           Update Profile

@@ -38,6 +38,8 @@ export const getUser = cache(async () => {
       id: true,
       email: true,
       username: true,
+      likesCoffee: true,
+      secretNumer: true,
     },
   });
 

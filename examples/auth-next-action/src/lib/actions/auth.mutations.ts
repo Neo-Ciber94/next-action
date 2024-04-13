@@ -16,6 +16,8 @@ const RegisterUserSchema = z.object({
   username: z.string().trim().min(1),
   email: z.string().email(),
   password: z.string().trim().min(4),
+  likesCoffee: z.coerce.boolean().default(false),
+  secretNumber: z.coerce.number().min(-100).max(100),
 });
 
 export const registerUser = publicAction.formAction(
@@ -41,6 +43,8 @@ export const registerUser = publicAction.formAction(
     const data: Prisma.UserCreateInput = {
       email: input.email,
       username: input.username,
+      secretNumer: input.secretNumber,
+      likesCoffee: input.likesCoffee,
       passwordHash,
     };
 
@@ -58,8 +62,10 @@ export const registerUser = publicAction.formAction(
   },
 );
 
-const UpdateUserSchema = z.object({
-  username: z.string().trim().min(1),
+const UpdateUserSchema = RegisterUserSchema.pick({
+  username: true,
+  likesCoffee: true,
+  secretNumber: true,
 });
 
 export const updateUser = authAction.formAction(
@@ -67,7 +73,12 @@ export const updateUser = authAction.formAction(
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const userNameAlreadyExists = await prisma.user
-      .count({ where: { username: input.username } })
+      .count({
+        where: {
+          username: input.username,
+          NOT: { id: session.userId },
+        },
+      })
       .then((x) => x > 0);
 
     if (userNameAlreadyExists) {
@@ -78,6 +89,8 @@ export const updateUser = authAction.formAction(
       where: { id: session.userId },
       data: {
         username: input.username,
+        likesCoffee: input.likesCoffee,
+        secretNumer: input.secretNumber,
       },
     });
 
