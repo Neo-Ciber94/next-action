@@ -31,17 +31,17 @@ jobs:
       - name: Build
         run: pnpm build && cd packages/sample-app && pnpm install
 
-      - name: Run tests
-        run: pnpm test
-
-      - name: Run examples
-        run: pnpm test:examples
-  
       - name: Check types
         run: pnpm typecheck
 
       - name: Check lint
         run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Run examples
+        run: pnpm test:examples
 
   docs:
     needs: [test]
