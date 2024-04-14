@@ -331,7 +331,7 @@ in a similar way react does to ensure the same behavior.
 // api/testactions/[[...testaction]]/route.ts
 import { exposeServerActions } from "next-action/testing/server";
 
-const handler = exposeServerActions({ createPost });
+const handler = exposeServerActions({ actions: { createPost } });
 export type TestActions = typeof handler.actions;
 export const POST = handler;
 ```
