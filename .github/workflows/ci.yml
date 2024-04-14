@@ -54,14 +54,13 @@ jobs:
           version: 8
 
       - name: Update README
-        run: cd packages/next-action && pnpm copy:readme
-
-      - name: Build docs
         run: |
           cd packages/next-action && 
-          pnpm install && 
-          pnpm install --global tsx && 
-          pnpm build:docs
+          pnpm install
+          pnpm copy:readme
+
+      - name: Build docs
+        run: cd packages/next-action && pnpm build:docs
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v4
