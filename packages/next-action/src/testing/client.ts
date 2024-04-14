@@ -91,6 +91,7 @@ export function createServerActionClient<T extends ActionRecord = never>(
           const endpoint = `${url}/${String(path)}`;
           const res = await fetch(endpoint, {
             method: "POST",
+            redirect: "manual",
             body: formData,
             headers,
           });
@@ -108,7 +109,7 @@ function createServerActionResponse<T>(res: Response): ActionResponse<T> {
       return res.headers;
     },
     get redirected() {
-      return res.redirected;
+      return isRedirectStatusCode(res.status);
     },
     get ok() {
       return res.ok;
@@ -123,7 +124,7 @@ function createServerActionResponse<T>(res: Response): ActionResponse<T> {
 }
 
 async function resolveResponseJson<T>(res: Response) {
-  if (res.redirected) {
+  if (isRedirectStatusCode(res.status)) {
     throw new ServerActionRedirectError("The server action result was a redirect");
   }
 
@@ -155,4 +156,8 @@ async function resolveResponseJson<T>(res: Response) {
 
   const value = await parseFromStream(stream);
   return value as T;
+}
+
+function isRedirectStatusCode(status: number) {
+  return status >= 300 && status < 400;
 }
