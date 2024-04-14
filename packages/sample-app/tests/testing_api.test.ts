@@ -37,7 +37,7 @@ describe("MediaWatch List", () => {
   });
 
   test("Should call test action", { timeout: 60_000 }, async () => {
-    await expect(client.getWatchMediaList()).resolves.toStrictEqual([]);
+    await expect(client.getWatchMediaList().then((x) => x.json())).resolves.toStrictEqual([]);
 
     // Create
     const actionRes1 = await client.createWatchMedia({
