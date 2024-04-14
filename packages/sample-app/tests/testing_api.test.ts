@@ -40,7 +40,7 @@ describe("MediaWatch List", () => {
     await expect(client.getWatchMediaList()).resolves.toStrictEqual([]);
 
     // Create
-    const ret1 = await client.createWatchMedia({
+    const actionRes1 = await client.createWatchMedia({
       title: "Title 1",
       watched: true,
       releaseDate: new Date(2024, 3, 6),
@@ -50,20 +50,25 @@ describe("MediaWatch List", () => {
       image: await readArtifactAsFormData("image", "image.jpg"),
     });
 
+    expect(actionRes1.ok).toBeTruthy();
+    const ret1 = await actionRes1.json();
+
     expect(ret1).toEqual({
       success: true,
       data: expect.objectContaining({ watched: true, title: "Title 1" }),
     });
 
-    const ret2 = await client.createWatchMedia({
-      title: "Title 2",
-      watched: false,
-      releaseDate: new Date(2024, 3, 1),
-      genres: new Set(["genre1", "genre3"]),
-      type: "series",
-      notes: "Notes 2",
-      image: await readArtifactAsFormData("image", "image.jpg"),
-    });
+    const ret2 = await client
+      .createWatchMedia({
+        title: "Title 2",
+        watched: false,
+        releaseDate: new Date(2024, 3, 1),
+        genres: new Set(["genre1", "genre3"]),
+        type: "series",
+        notes: "Notes 2",
+        image: await readArtifactAsFormData("image", "image.jpg"),
+      })
+      .then((x) => x.json());
 
     expect(ret2).toEqual({
       success: true,
@@ -75,26 +80,28 @@ describe("MediaWatch List", () => {
 
     // Update
     await expect(
-      client.toggleWatched({
-        watched: true,
-        mediaId: lastAddedId,
-      }),
+      client
+        .toggleWatched({
+          watched: true,
+          mediaId: lastAddedId,
+        })
+        .then((x) => x.json()),
     ).resolves.toStrictEqual({ success: true, data: void 0 });
 
-    await expect(client.getWatchMediaList()).resolves.toEqual([
+    await expect(client.getWatchMediaList().then((x) => x.json())).resolves.toEqual([
       expect.objectContaining({ watched: true }),
       expect.objectContaining({ watched: true }),
     ]);
 
     // Delete
     await expect(
-      client.deleteWatchMedia(asFormData("mediaId", lastAddedId)),
+      client.deleteWatchMedia(asFormData("mediaId", lastAddedId)).then((x) => x.json()),
     ).resolves.toStrictEqual({
       success: true,
       data: true,
     });
 
-    await expect(client.getWatchMediaList()).resolves.toHaveLength(1);
+    await expect(client.getWatchMediaList().then((x) => x.json())).resolves.toHaveLength(1);
   });
 });
 
