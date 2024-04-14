@@ -16,5 +16,5 @@ model User {
   email        String  @unique
   passwordHash String
   likesCoffee  Boolean @default(false)
-  secretNumer  Int
+  secretNumber  Int
 }

@@ -4,15 +4,20 @@ import { encodeAsync } from "seria/form-data";
 import { parseFromStream } from "seria";
 
 /**
- * Options for the client.
- *
- * @internal
+ * Options for the server action client.
  */
 export type CreateActionClientOptions = {
   /**
    * Cookies to pass in each request.
    */
-  cookies: Record<string, string>;
+  cookies?:
+    | Record<string, string>
+    | (() => Promise<Record<string, string>> | Record<string, string>);
+
+  /**
+   * Headers to pass in each request.
+   */
+  headers?: HeadersInit | (() => HeadersInit | Promise<HeadersInit>);
 };
 
 /**
@@ -27,6 +32,7 @@ export type ActionResponse<T> = {
    * @throws If the body was already consumed
    */
   json(): Promise<T>;
+
   /**
    * The headers send from the server action.
    */
@@ -70,23 +76,14 @@ export function createServerActionClient<T extends ActionRecord = never>(
   url: string,
   opts?: CreateActionClientOptions,
 ) {
-  const { cookies } = opts || {};
-  const headers = new Headers();
-
-  if (cookies) {
-    for (const [cookieName, cookieValue] of Object.entries(cookies)) {
-      headers.append(
-        "COOKIE",
-        `${encodeURIComponent(cookieName)}=${encodeURIComponent(cookieValue)}`,
-      );
-    }
-  }
+  const options = opts || {};
 
   return new Proxy(
     {},
     {
       get(_, path) {
         return async function (...args: any[]) {
+          const headers = await getRequestHeaders(options);
           const formData = await encodeAsync(args);
           const endpoint = `${url}/${String(path)}`;
           const res = await fetch(endpoint, {
@@ -101,6 +98,33 @@ export function createServerActionClient<T extends ActionRecord = never>(
       },
     },
   ) as ServerActionClient<T>;
+}
+
+async function getRequestHeaders(opts: CreateActionClientOptions) {
+  const requestHeaders = new Headers();
+
+  if (opts.headers) {
+    const getHeaders = typeof opts.headers === "function" ? opts.headers() : opts.headers;
+    const headers = new Headers(await Promise.resolve(getHeaders));
+
+    for (const [name, value] of headers.entries()) {
+      requestHeaders.append(name, value);
+    }
+  }
+
+  if (opts.cookies) {
+    const getCookies = typeof opts.cookies === "function" ? opts.cookies() : opts.cookies;
+    const cookies = await Promise.resolve(getCookies);
+
+    for (const [cookieName, cookieValue] of Object.entries(cookies)) {
+      requestHeaders.append(
+        "COOKIE",
+        `${encodeURIComponent(cookieName)}=${encodeURIComponent(cookieValue)}`,
+      );
+    }
+  }
+
+  return requestHeaders;
 }
 
 function createServerActionResponse<T>(res: Response): ActionResponse<T> {

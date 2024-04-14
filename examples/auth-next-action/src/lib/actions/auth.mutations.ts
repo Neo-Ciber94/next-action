@@ -43,7 +43,7 @@ export const registerUser = publicAction.formAction(
     const data: Prisma.UserCreateInput = {
       email: input.email,
       username: input.username,
-      secretNumer: input.secretNumber,
+      secretNumber: input.secretNumber,
       likesCoffee: input.likesCoffee,
       passwordHash,
     };
@@ -90,7 +90,7 @@ export const updateUser = authAction.formAction(
       data: {
         username: input.username,
         likesCoffee: input.likesCoffee,
-        secretNumer: input.secretNumber,
+        secretNumber: input.secretNumber,
       },
     });
 

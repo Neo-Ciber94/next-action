@@ -39,7 +39,7 @@ export const getUser = cache(async () => {
       email: true,
       username: true,
       likesCoffee: true,
-      secretNumer: true,
+      secretNumber: true,
     },
   });
 

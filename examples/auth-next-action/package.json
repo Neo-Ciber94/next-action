@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3020",
+    "prod": "next build && next start --port 3020",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -26,7 +26,7 @@ export default async function MePage() {
           <span className="font-bold">Email:</span> {user.email}
         </p>
         <p className="mb-4">
-          <span className="font-bold">Secret Number:</span> {user.secretNumer}
+          <span className="font-bold">Secret Number:</span> {user.secretNumber}
         </p>
         <p className="mb-4">
           <span className="font-bold">Likes Coffee? </span> {user.likesCoffee ? "Yes" : "No"}
