@@ -4,7 +4,6 @@ import { stringifyToStream } from "seria";
 import { ActionError } from "..";
 import { isRedirectError, type RedirectError } from "next/dist/client/components/redirect";
 import { isNotFoundError } from "next/dist/client/components/not-found";
-import { cookies } from "next/headers";
 
 const EXPOSE_SERVER_ACTIONS_ERROR =
   "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint";
@@ -138,8 +137,4 @@ function redirectFailedResponse() {
       },
     },
   );
-}
-
-function getResponseCookies() {
-  return Array.from(cookies()).map(([_, cookie]) => cookie);
 }
