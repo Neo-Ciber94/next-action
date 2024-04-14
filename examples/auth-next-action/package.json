@@ -8,8 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "playwright test",
     "db:push": "prisma db push",
-    "test": "playwright test"
+    "postinstall": "pnpm db:push"
   },
   "dependencies": {
     "@prisma/client": "5.12.1",
