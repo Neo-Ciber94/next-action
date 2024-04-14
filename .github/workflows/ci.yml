@@ -52,14 +52,16 @@ jobs:
         uses: pnpm/action-setup@v3.0.0
         with:
           version: 8
-          run_install: |
-            - args: [--global, tsx]
 
       - name: Update README
         run: cd packages/next-action && pnpm copy:readme
 
       - name: Build docs
-        run: cd packages/next-action && pnpm install && pnpm build:docs
+        run: |
+          cd packages/next-action && 
+          pnpm install && 
+          pnpm install --global tsx && 
+          pnpm build:docs
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v4
