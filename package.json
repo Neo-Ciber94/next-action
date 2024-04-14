@@ -9,9 +9,10 @@
     ],
     "scripts": {
         "build": "turbo run build --filter=./packages/next-action",
-        "test": "turbo run test",
         "typecheck": "turbo run typecheck",
-        "lint": "turbo run lint"
+        "lint": "turbo run lint",
+        "test": "turbo run test --filter=!./examples/*",
+        "test:examples": "turbo run test --filter=./examples/*"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^7.4.0",

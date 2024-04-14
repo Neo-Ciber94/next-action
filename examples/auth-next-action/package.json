@@ -10,7 +10,7 @@
     "lint": "next lint",
     "test": "playwright test",
     "db:push": "prisma db push",
-    "postinstall": "pnpm db:push"
+    "postinstall": "pnpm exec playwright install && pnpm db:push"
   },
   "dependencies": {
     "@prisma/client": "5.12.1",
