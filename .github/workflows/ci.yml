@@ -56,7 +56,7 @@ jobs:
       - name: Update README
         run: |
           cd packages/next-action && 
-          pnpm install
+          pnpm install --ignore-scripts
           pnpm copy:readme
 
       - name: Build docs
