@@ -3,7 +3,9 @@
     "pipeline": {
         "build": {
             "outputs": [
-                "*/dist/**"
+                "*/dist/**",
+                "*/.next/**",
+                "!*/.next/cache/**"
             ]
         },
         "lint": {},
