@@ -5,7 +5,7 @@ import { parseFromStream } from "seria";
 
 /**
  * Options for the client.
- * 
+ *
  * @internal
  */
 export type CreateActionClientOptions = {
@@ -16,11 +16,49 @@ export type CreateActionClientOptions = {
 };
 
 /**
+ * Represents a response from a server action.
+ */
+export type ActionResponse<T> = {
+  /**
+   * Parse the result of the server action to a JSON.
+   *
+   * @throws If the server action redirect the client
+   * @throws If the server action call failed
+   * @throws If the body was already consumed
+   */
+  json(): Promise<T>;
+  /**
+   * The headers send from the server action.
+   */
+  headers: Headers;
+
+  /**
+   * Whether if the response body was already consumed.
+   */
+  bodyUsed: boolean;
+
+  /**
+   * Whether if the response was successful (status in the range 200-299).
+   */
+  ok: boolean;
+
+  /**
+   * Whether if the server action redirect the client.
+   */
+  redirected: boolean;
+};
+
+/**
  * @internal
  */
 export type ServerActionClient<T extends ActionRecord> = {
-  [K in keyof T]: (...args: Parameters<T[K]>) => ReturnType<T[K]>;
+  [K in keyof T]: (...args: Parameters<T[K]>) => Promise<ActionResponse<Awaited<ReturnType<T[K]>>>>;
 };
+
+/**
+ * When a server action response is a redirection.
+ */
+export class ServerActionRedirectError extends Error {}
 
 /**
  * Create a client to call your server actions.
@@ -57,34 +95,64 @@ export function createServerActionClient<T extends ActionRecord = never>(
             headers,
           });
 
-          if (!res.ok) {
-            const isJson = res.headers.get("content-type") === "application/json";
-            const isActionError = res.headers.get("x-server-action-error");
-            const contents = await res.text();
-
-            if (isJson) {
-              const err = JSON.parse(contents);
-              const message =
-                isActionError && typeof err?.message === "string"
-                  ? err.message
-                  : "Something went wrong";
-              throw new Error(message);
-            } else {
-              console.error(contents);
-              throw new Error("Unexpected error");
-            }
-          }
-
-          const stream = res.body?.pipeThrough(new TextDecoderStream());
-
-          if (!stream) {
-            throw new Error("Response body is empty");
-          }
-
-          const value = await parseFromStream(stream);
-          return value as T;
+          return createServerActionResponse<T>(res);
         };
       },
     },
   ) as ServerActionClient<T>;
+}
+
+function createServerActionResponse<T>(res: Response): ActionResponse<T> {
+  return {
+    get headers() {
+      return res.headers;
+    },
+    get redirected() {
+      return res.redirected;
+    },
+    get ok() {
+      return res.ok;
+    },
+    get bodyUsed() {
+      return res.bodyUsed;
+    },
+    async json() {
+      return resolveResponseJson(res);
+    },
+  };
+}
+
+async function resolveResponseJson<T>(res: Response) {
+  if (res.redirected) {
+    throw new ServerActionRedirectError("The server action result was a redirect");
+  }
+
+  if (res.bodyUsed) {
+    throw new Error("The request body was already used");
+  }
+
+  if (!res.ok) {
+    const isJson = res.headers.get("content-type") === "application/json";
+    const isActionError = res.headers.get("x-server-action-error");
+    const contents = await res.text();
+
+    if (isJson) {
+      const err = JSON.parse(contents);
+      const message =
+        isActionError && typeof err?.message === "string" ? err.message : "Something went wrong";
+      throw new Error(message);
+    } else {
+      console.error(contents);
+      throw new Error("Unexpected error");
+    }
+  }
+
+  const stream = res.body?.pipeThrough(new TextDecoderStream());
+
+  if (!stream) {
+    throw new Error("Response body is empty");
+  }
+
+  const value = await parseFromStream(stream);
+  return value as T;
 }

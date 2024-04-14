@@ -2,8 +2,9 @@
 import { decode } from "seria/form-data";
 import { stringifyToStream } from "seria";
 import { ActionError } from "..";
-import { isRedirectError } from "next/dist/client/components/redirect";
+import { isRedirectError, type RedirectError } from "next/dist/client/components/redirect";
 import { isNotFoundError } from "next/dist/client/components/not-found";
+import { cookies } from "next/headers";
 
 const EXPOSE_SERVER_ACTIONS_ERROR =
   "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint";
@@ -63,29 +64,7 @@ export function exposeServerActions<TActions extends ActionRecord>(
       });
     } catch (err) {
       if (isRedirectError(err)) {
-        const matches = /^NEXT_REDIRECT;(push|replace);([^;]+);(\d+);$/.exec(err.digest);
-
-        if (!matches) {
-          // We don't know where to redirect the user
-          return json(
-            { message: `Failed to redirect user` },
-            {
-              status: 500,
-              headers: {
-                "x-server-action-error": "1",
-              },
-            },
-          );
-        }
-
-        const location = matches[1];
-        const status = parseInt(matches[2]);
-        return new Response(null, {
-          status,
-          headers: {
-            location,
-          },
-        });
+        return getRedirectResponse(err);
       }
 
       if (isNotFoundError(err)) {
@@ -124,4 +103,43 @@ function json<T extends JsonValue>(value: T, init?: ResponseInit) {
       "content-type": "application/json",
     },
   });
+}
+
+function getRedirectResponse(err: RedirectError<string>) {
+  const matches = /^NEXT_REDIRECT;(push|replace);([^;]+);(\d+);$/.exec(err.digest);
+
+  try {
+    if (!matches) {
+      // We don't know where to redirect the user
+      return redirectFailedResponse();
+    }
+
+    const location = matches[2];
+    const status = parseInt(matches[3]);
+    return new Response(null, {
+      status,
+      headers: {
+        location,
+      },
+    });
+  } catch (err) {
+    console.error(matches, err);
+    return redirectFailedResponse();
+  }
+}
+
+function redirectFailedResponse() {
+  return json(
+    { message: "Failed to redirect user" },
+    {
+      status: 500,
+      headers: {
+        "x-server-action-error": "1",
+      },
+    },
+  );
+}
+
+function getResponseCookies() {
+  return Array.from(cookies()).map(([_, cookie]) => cookie);
 }
