@@ -75,7 +75,7 @@ describe("MediaWatch List", () => {
       data: expect.objectContaining({ watched: false, title: "Title 2" }),
     });
 
-    await expect(client.getWatchMediaList()).resolves.toHaveLength(2);
+    await expect(client.getWatchMediaList().then((x) => x.json())).resolves.toHaveLength(2);
     const lastAddedId = ret2.success ? ret2.data.id : throwUnreachable();
 
     // Update
