@@ -8,8 +8,35 @@ import type { ServerFunction, ActionRecord } from "./types";
 const EXPOSE_SERVER_ACTIONS_ERROR =
   "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint";
 
-type ExposeActionsOptions<TActions extends ActionRecord> = {
+/**
+ * Options to pass to expose the server actions.
+ * 
+ * 
+ * ```ts
+ * import { createPost, updatePost, deletePost, getAllPost } from "@/lib/actions";
+ * 
+ * const handler = exposeServerActions({
+ *    endpoint: "/api/testactions",
+ *    actions: {
+ *      createPost,
+ *      updatePost,
+ *      deletePost,
+ *      getAllPost
+ *    }
+ * })
+ * ```
+ */
+export type ExposeActionsOptions<TActions extends ActionRecord> = {
+  /**
+   * The base endpoint to use when calling the server actions.
+   *
+   * @example `/api/testactions`
+   */
   endpoint: string;
+
+  /**
+   * An object with all server actions to expose.
+   */
   actions: TActions;
 };
 
