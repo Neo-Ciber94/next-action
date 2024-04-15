@@ -102,13 +102,15 @@ export function createServerActionClient<T extends ActionRecord = never>(
   }) as ServerActionClient<T>;
 }
 
-type Key = string | symbol;
+type Callback = (paths: string[], args: unknown[]) => unknown;
 
-type Callback = (paths: Key[], args: unknown[]) => unknown;
-
-function createRecursiveProxy(paths: Key[], callback: Callback): unknown {
+function createRecursiveProxy(paths: string[], callback: Callback): unknown {
   const proxy = new Proxy(() => {}, {
     get(_target, key) {
+      if (typeof key !== "string") {
+        return undefined;
+      }
+
       return createRecursiveProxy([...paths, key], callback);
     },
     apply(_target, _this, args) {
