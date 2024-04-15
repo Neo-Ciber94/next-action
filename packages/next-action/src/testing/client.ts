@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { type ActionRecord } from "./server";
+import type { ServerFunction, ActionRecord } from "./types";
 import { encodeAsync } from "seria/form-data";
 import { parseFromStream } from "seria";
 
@@ -58,7 +57,11 @@ export type ActionResponse<T> = {
  * @internal
  */
 export type ServerActionClient<T extends ActionRecord> = {
-  [K in keyof T]: (...args: Parameters<T[K]>) => Promise<ActionResponse<Awaited<ReturnType<T[K]>>>>;
+  [K in keyof T]: T[K] extends ActionRecord
+    ? ServerActionClient<T[K]>
+    : T[K] extends ServerFunction
+      ? (...args: Parameters<T[K]>) => Promise<ActionResponse<Awaited<ReturnType<T[K]>>>>
+      : never;
 };
 
 /**
@@ -78,26 +81,42 @@ export function createServerActionClient<T extends ActionRecord = never>(
 ) {
   const options = opts || {};
 
-  return new Proxy(
-    {},
-    {
-      get(_, path) {
-        return async function (...args: any[]) {
-          const headers = await getRequestHeaders(options);
-          const formData = await encodeAsync(args);
-          const endpoint = `${url}/${String(path)}`;
-          const res = await fetch(endpoint, {
-            method: "POST",
-            redirect: "manual",
-            body: formData,
-            headers,
-          });
+  return createRecursiveProxy([], async (paths, args) => {
+    if (paths.length === 0) {
+      throw new Error("No action to call");
+    }
 
-          return createServerActionResponse<T>(res);
-        };
-      },
+    const path = paths.join("/");
+
+    const headers = await getRequestHeaders(options);
+    const formData = await encodeAsync(args);
+    const endpoint = `${url}/${path}`;
+    const res = await fetch(endpoint, {
+      method: "POST",
+      redirect: "manual",
+      body: formData,
+      headers,
+    });
+
+    return createServerActionResponse<T>(res);
+  }) as ServerActionClient<T>;
+}
+
+type Key = string | symbol;
+
+type Callback = (paths: Key[], args: unknown[]) => unknown;
+
+function createRecursiveProxy(paths: Key[], callback: Callback): unknown {
+  const proxy = new Proxy(() => {}, {
+    get(_target, key) {
+      return createRecursiveProxy([...paths, key], callback);
     },
-  ) as ServerActionClient<T>;
+    apply(_target, _this, args) {
+      return callback(paths, args);
+    },
+  });
+
+  return proxy;
 }
 
 async function getRequestHeaders(opts: CreateActionClientOptions) {

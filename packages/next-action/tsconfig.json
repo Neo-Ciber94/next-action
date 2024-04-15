@@ -30,5 +30,9 @@
     "setupTests.ts",
     "tsup.config.ts",
     "typedoc.config.cjs"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }

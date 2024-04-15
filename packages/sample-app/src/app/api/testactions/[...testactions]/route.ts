@@ -8,6 +8,7 @@ import {
 import { exposeServerActions } from "next-action/testing/server";
 
 const testActions = exposeServerActions({
+  endpoint: "/api/testactions",
   actions: {
     getWatchMediaList,
     createWatchMedia,

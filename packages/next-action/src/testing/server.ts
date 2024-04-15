@@ -1,25 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { decode } from "seria/form-data";
 import { stringifyToStream } from "seria";
 import { ActionError } from "..";
 import { isRedirectError, type RedirectError } from "next/dist/client/components/redirect";
 import { isNotFoundError } from "next/dist/client/components/not-found";
+import type { ServerFunction, ActionRecord } from "./types";
 
 const EXPOSE_SERVER_ACTIONS_ERROR =
   "Set `EXPOSE_SERVER_ACTIONS` environment variable to allow call server actions from an endpoint";
 
-export type ActionRecord = {
-  [key: string]: (...args: any[]) => Promise<unknown>;
-};
-
 type ExposeActionsOptions<TActions extends ActionRecord> = {
+  endpoint: string;
   actions: TActions;
 };
 
 export function exposeServerActions<TActions extends ActionRecord>(
   options: ExposeActionsOptions<TActions>,
 ) {
-  const { actions } = options;
+  const { endpoint, actions } = options;
   const handler = async function (req: Request) {
     if (!process.env.EXPOSE_SERVER_ACTIONS) {
       console.error(EXPOSE_SERVER_ACTIONS_ERROR);
@@ -33,16 +30,14 @@ export function exposeServerActions<TActions extends ActionRecord>(
 
     const url = new URL(req.url);
     const pathname = url.pathname;
-    const name = pathname.slice(pathname.lastIndexOf("/") + 1);
-
-    if (!name) {
-      return json({ message: "No action to call" }, { status: 404 });
-    }
-
-    const action = actions[name as keyof TActions];
+    const callPath = extractActionPath(endpoint, pathname);
+    const action = resolveAction(callPath, actions);
 
     if (!action) {
-      return json({ message: `Server action '${name}' was not found` }, { status: 404 });
+      return json(
+        { message: `Server action '${callPath.join("/")}' was not found` },
+        { status: 404 },
+      );
     }
 
     try {
@@ -137,4 +132,54 @@ function redirectFailedResponse() {
       },
     },
   );
+}
+
+function extractActionPath(endpoint: string, pathname: string) {
+  const endpointParts = endpoint.split("/").filter(Boolean);
+  const pathnameParts = pathname.split("/").filter(Boolean);
+
+  if (!startWithSequence(pathnameParts, endpointParts)) {
+    throw new Error(`Invalid endpoint, expected '${endpoint}' but pathname was '${pathname}'`);
+  }
+
+  return pathnameParts.slice(endpointParts.length);
+}
+
+function resolveAction(paths: string[], actions: ActionRecord) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let actionTarget: any = actions;
+
+  for (const p of paths) {
+    const next = actionTarget[p];
+
+    if (!next) {
+      return null;
+    }
+
+    actionTarget = next;
+  }
+
+  if (!(typeof actionTarget === "function")) {
+    return null;
+  }
+
+  return actionTarget as ServerFunction;
+}
+
+function startWithSequence<T>(arr: T[], sequence: T[]) {
+  if (sequence.length === 0) {
+    return true;
+  }
+
+  if (sequence.length > arr.length) {
+    return false;
+  }
+
+  for (let i = 0; i < sequence.length; i++) {
+    if (sequence[i] !== arr[i]) {
+      return false;
+    }
+  }
+
+  return true;
 }
