@@ -74,6 +74,7 @@ export default defineConfig({
   webServer: {
     command: "npm run prod",
     url: E2E_BASE_URL,
+    timeout: 120_000,
     env: {
       EXPOSE_SERVER_ACTIONS: "1",
     },

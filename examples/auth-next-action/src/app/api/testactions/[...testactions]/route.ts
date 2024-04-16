@@ -5,11 +5,13 @@ import { exposeServerActions } from "next-action/testing/server";
 const handler = exposeServerActions({
   endpoint: "/api/testactions",
   actions: {
-    loginUser,
-    registerUser,
-    logoutUser,
-    updateUser,
-    getUser,
+    auth: {
+      loginUser,
+      registerUser,
+      logoutUser,
+      updateUser,
+      getUser,
+    },
   },
 });
 

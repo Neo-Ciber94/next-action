@@ -17,7 +17,7 @@ test.describe("Auth server actions", () => {
 
     const client = createServerActionClient<TestActions>(`${E2E_BASE_URL}/api/testactions`);
     const { username, email } = randomUser();
-    const registerRes = await client.registerUser(
+    const registerRes = await client.auth.registerUser(
       createFormData({
         username,
         email,
@@ -29,7 +29,7 @@ test.describe("Auth server actions", () => {
 
     expect(registerRes.redirected).toBeTruthy();
 
-    const loginUserRes = await client.loginUser(
+    const loginUserRes = await client.auth.loginUser(
       createFormData({
         email,
         password: "pass123",
@@ -52,7 +52,7 @@ test.describe("Auth server actions", () => {
     });
 
     const { username, email } = randomUser();
-    const registerRes = await client.registerUser(
+    const registerRes = await client.auth.registerUser(
       createFormData({
         username,
         email,
@@ -69,7 +69,7 @@ test.describe("Auth server actions", () => {
     expect(authSessionCookie).toBeDefined();
     requestCookies[COOKIE_JWT_TOKEN] = authSessionCookie!.value;
 
-    const updateRes = await client.updateUser(
+    const updateRes = await client.auth.updateUser(
       createFormData({
         username,
         likesCoffe: "",
@@ -79,7 +79,7 @@ test.describe("Auth server actions", () => {
 
     expect(updateRes.redirected).toBeTruthy();
 
-    const user = await client.getUser().then((x) => x.json());
+    const user = await client.auth.getUser().then((x) => x.json());
     expect(user).toEqual(
       expect.objectContaining({
         email,
@@ -95,7 +95,7 @@ test.describe("Auth server actions", () => {
 
     const client = createServerActionClient<TestActions>(`${E2E_BASE_URL}/api/testactions`);
     const { username, email } = randomUser();
-    const registerRes = await client.registerUser(
+    const registerRes = await client.auth.registerUser(
       createFormData({
         username,
         email,
@@ -107,7 +107,7 @@ test.describe("Auth server actions", () => {
 
     expect(registerRes.redirected).toBeTruthy();
 
-    const logoutRes = await client.logoutUser();
+    const logoutRes = await client.auth.logoutUser();
     expect(logoutRes.redirected).toBeTruthy();
   });
 });
