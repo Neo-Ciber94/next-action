@@ -349,7 +349,8 @@ beforeAll(() => {
 
 test("Should create post", async () => {
   const client = createServerActionClient<TestActions>("http://localhost:3000/api/testactions");
-  const result = await client.createPost({ title: "Post 1", content: "This is my first post" });
+  const res = await client.createPost({ title: "Post 1", content: "This is my first post" });
+  const result = await res.json();
   expect(result.success).toBeTruthy();
 });
 ```
