@@ -27,10 +27,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
 .env.*
-!.env.sample
-!.env.test.local
+
+# This is only for testing
+!.env 
 
 # vercel
 .vercel
