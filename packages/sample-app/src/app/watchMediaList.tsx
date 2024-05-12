@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { deleteWatchMedia, toggleWatched, createWatchMedia } from "@/app/lib/api";
+import { deleteWatchMedia, toggleWatched, createWatchMedia } from "@/app/lib/actions";
 import type { WatchMedia, CreateWatchMedia } from "@/app/lib/schema";
 import { useAction, useFormAction } from "next-action/react";
 import { useRouter } from "next/navigation";

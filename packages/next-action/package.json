@@ -37,8 +37,8 @@
     "vitest": "^1.4.0"
   },
   "peerDependencies": {
-    "next": "^14",
-    "react": "^18"
+    "next": ">14",
+    "react": ">18"
   },
   "exports": {
     "./package.json": "./package.json",

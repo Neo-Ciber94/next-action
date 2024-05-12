@@ -20,16 +20,6 @@ export type Validator<T> = {
 };
 
 /**
- * Options for a server action.
- */
-export type ActionOptions<T> = {
-  /**
-   * A validator for the type `T`.
-   */
-  validator: Validator<T>;
-};
-
-/**
  * Represents a server action.
  */
 export type ActionFunction<T, TResult, TCtx> = undefined extends T
@@ -108,11 +98,11 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
    * @param actionOptions Additional options, like a validator.
    */
   function action<T = void, TResult = any>(
+    validator: Validator<T> | undefined,
     fn: ActionFunction<T, TResult, TNextContext>,
-    actionOptions?: ActionOptions<T>,
   ) {
     return async function (input: T): ActionResult<TResult, TError> {
-      const { validator = { parse: identity } } = actionOptions || {};
+      const __validator = validator ?? { parse: identity };
 
       try {
         let context: any =
@@ -126,7 +116,7 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
           }
         }
 
-        const safeInput = validator.parse(input);
+        const safeInput = __validator.parse(input);
         const result = await fn({ input: safeInput, context });
 
         if (onAfterExecute) {
@@ -163,12 +153,12 @@ export function createServerActionProvider<TError = string, TContext = {}, TCtx 
    * @param actionOptions Additional options, like a validator.
    */
   function formAction<T = void, TResult = void>(
+    validator: Validator<T> | undefined,
     fn: (params: { input: T; context: TCtx }) => Promise<TResult>,
-    actionOptions?: ActionOptions<T>,
   ) {
     const baseAction = action<T, TResult>(
+      validator,
       fn as ActionFunction<T, TResult, TNextContext>,
-      actionOptions,
     );
 
     async function innerFormAction(formData: FormData) {

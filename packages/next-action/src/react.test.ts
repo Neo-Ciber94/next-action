@@ -7,18 +7,17 @@ describe("Call action with useAction", () => {
   const action = createServerActionProvider();
 
   test("Should return result from server action", async () => {
+    const validator = {
+      parse(value: any) {
+        return value;
+      },
+    } satisfies Validator<string>
+
     const myAction = action(
+      validator,
       async ({ input }) => {
         return "Hello " + input;
-      },
-      {
-        validator: {
-          parse(value: any) {
-            return value;
-          },
-        } satisfies Validator<string>,
-      },
-    );
+      });
 
     const { result } = renderHook(() => useAction(myAction));
     const ret = await act(() => result.current.execute("world!"));
@@ -33,7 +32,7 @@ describe("Call action with useAction", () => {
   });
 
   test("Should return error from server action", async () => {
-    const myAction = action(() => {
+    const myAction = action(undefined, () => {
       throw new Error("Oh oh, stinky");
     });
 
@@ -50,7 +49,7 @@ describe("Call action with useAction", () => {
   });
 
   test("Should call onSuccess callback", async () => {
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       return "Ayaka";
     });
 
@@ -64,7 +63,7 @@ describe("Call action with useAction", () => {
   });
 
   test("Should call onError callback", async () => {
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       throw new Error("Call failed");
     });
 
@@ -78,7 +77,7 @@ describe("Call action with useAction", () => {
   });
 
   test("Should call onSettle callback", async () => {
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       return 10;
     });
 
@@ -96,19 +95,18 @@ describe("Call action with useFormAction", () => {
   const action = createServerActionProvider();
 
   test("Should return result from form server action", async () => {
+    const validator = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      parse(value: any) {
+        return String(value.data);
+      },
+    } satisfies Validator<string>
+
     const myAction = action.formAction(
+      validator,
       async ({ input }) => {
         return "Hello " + input;
-      },
-      {
-        validator: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          parse(value: any) {
-            return String(value.data);
-          },
-        } satisfies Validator<string>,
-      },
-    );
+      });
 
     const { result } = renderHook(() => useFormAction(myAction));
     const formData = new FormData();
@@ -125,7 +123,7 @@ describe("Call action with useFormAction", () => {
   });
 
   test("Should return error from server action", async () => {
-    const myAction = action.formAction(() => {
+    const myAction = action.formAction(undefined, () => {
       throw new Error("Oh oh, stinky");
     });
 
@@ -142,7 +140,7 @@ describe("Call action with useFormAction", () => {
   });
 
   test("Should call onSuccess callback", async () => {
-    const myAction = action.formAction(async () => {
+    const myAction = action.formAction(undefined, async () => {
       return "Ayaka";
     });
 
@@ -156,7 +154,7 @@ describe("Call action with useFormAction", () => {
   });
 
   test("Should call onError callback", async () => {
-    const myAction = action.formAction(async () => {
+    const myAction = action.formAction(undefined, async () => {
       throw new Error("Call failed");
     });
 
@@ -170,7 +168,7 @@ describe("Call action with useFormAction", () => {
   });
 
   test("Should call onSettle callback", async () => {
-    const myAction = action.formAction(async () => {
+    const myAction = action.formAction(undefined, async () => {
       return 10;
     });
 

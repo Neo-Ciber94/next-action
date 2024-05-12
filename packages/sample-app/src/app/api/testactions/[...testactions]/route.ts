@@ -4,7 +4,7 @@ import {
   deleteWatchMedia,
   getWatchMediaList,
   toggleWatched,
-} from "@/app/lib/api";
+} from "@/app/lib/actions";
 import { exposeServerActions } from "next-action/testing/server";
 
 const testActions = exposeServerActions({

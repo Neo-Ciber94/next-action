@@ -7,7 +7,7 @@ describe("Call server action", () => {
   const action = createServerActionProvider();
 
   test("Should return success", async () => {
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       return 10;
     });
 
@@ -15,7 +15,7 @@ describe("Call server action", () => {
   });
 
   test("Should return error", async () => {
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       throw new ActionError("Oh oh, an error");
     });
 
@@ -35,12 +35,10 @@ describe("Call server action", () => {
     };
 
     const myAction = action(
+      validator,
       async ({ input }) => {
         return 5 * input;
-      },
-      {
-        validator,
-      },
+      }
     );
 
     await expect(myAction(12)).resolves.toStrictEqual({ success: true, data: 60 });
@@ -51,7 +49,7 @@ describe("Call form server action", () => {
   const action = createServerActionProvider();
 
   test("Should return success", async () => {
-    const myAction = action.formAction(async () => {
+    const myAction = action.formAction(undefined, async () => {
       return 10;
     });
 
@@ -59,7 +57,7 @@ describe("Call form server action", () => {
   });
 
   test("Should return error", async () => {
-    const myAction = action.formAction(async () => {
+    const myAction = action.formAction(undefined, async () => {
       throw new ActionError("Oh oh, an error");
     });
 
@@ -70,7 +68,7 @@ describe("Call form server action", () => {
   });
 
   test("Should invoke form action no args", async () => {
-    const myAction = action.formAction(async () => {
+    const myAction = action.formAction(undefined, async () => {
       return 10;
     });
 
@@ -86,13 +84,10 @@ describe("Call form server action", () => {
     };
 
     const myAction = action.formAction(
+      validator,
       async ({ input }) => {
         return 15 * input.x;
-      },
-      {
-        validator,
-      },
-    );
+      });
 
     await expect(myAction.action({ x: 2 })).resolves.toStrictEqual({
       success: true,
@@ -116,7 +111,7 @@ describe("Error mapping", () => {
       },
     });
 
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       throw new ActionError("This is an error");
     });
 
@@ -131,7 +126,7 @@ describe("Error mapping", () => {
 
     const action = createServerActionProvider();
 
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       throw new Error("This is a internal and private error");
     });
 
@@ -146,7 +141,7 @@ describe("Error mapping", () => {
 
     const action = createServerActionProvider();
 
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       throw new Error("This is a internal and private error");
     });
 
@@ -165,7 +160,7 @@ describe("Action context", () => {
       },
     });
 
-    const myAction = action(async ({ context }) => {
+    const myAction = action(undefined, async ({ context }) => {
       return 4 * context.value;
     });
 
@@ -179,7 +174,7 @@ describe("Action context", () => {
       },
     });
 
-    const myAction = action(async ({ context }) => {
+    const myAction = action(undefined, async ({ context }) => {
       return 10 * context.value;
     });
 
@@ -198,7 +193,7 @@ describe("Server action middlewares", () => {
       },
     });
 
-    const myAction = action(async ({ context }) => {
+    const myAction = action(undefined, async ({ context }) => {
       return context.text;
     });
 
@@ -219,13 +214,10 @@ describe("Server action middlewares", () => {
     });
 
     const myAction = action(
+      dummyValidator,
       async ({ input, context }) => {
         return `${context.textInput} = ${input}`;
-      },
-      {
-        validator: dummyValidator,
-      },
-    );
+      });
 
     await expect(myAction(42)).resolves.toStrictEqual({
       success: true,
@@ -242,7 +234,7 @@ describe("Server action middlewares", () => {
       },
     });
 
-    const myAction = action(async () => {
+    const myAction = action(undefined, async () => {
       return 10;
     });
 

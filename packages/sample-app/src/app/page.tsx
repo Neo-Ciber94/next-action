@@ -1,4 +1,4 @@
-import { getWatchMediaList } from "./lib/api";
+import { getWatchMediaList } from "./lib/actions";
 import WatchMediaList from "./watchMediaList";
 
 export default async function WatchMediaPage() {

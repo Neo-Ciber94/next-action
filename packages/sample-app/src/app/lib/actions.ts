@@ -1,5 +1,5 @@
 "use server";
-import { action } from "./action";
+import { action } from "./client";
 import {
   $valibot,
   CreateWatchMediaSchema,
@@ -19,6 +19,7 @@ export async function getWatchMediaList() {
 }
 
 export const createWatchMedia = action(
+  $valibot(CreateWatchMediaSchema),
   async ({ input }) => {
     const id = crypto.randomUUID();
     const image = input.image.get("image") as File;
@@ -41,13 +42,10 @@ export const createWatchMedia = action(
     DB.data.set(id, watchMedia);
     revalidatePath("/");
     return watchMedia;
-  },
-  {
-    validator: $valibot(CreateWatchMediaSchema),
-  },
-);
+  });
 
 export const toggleWatched = action(
+  $valibot(ToggleWatchMediaSchema),
   async ({ input }) => {
     const media = Array.from(DB.data.values()).find((m) => m.id === input.mediaId);
 
@@ -56,17 +54,14 @@ export const toggleWatched = action(
     }
 
     revalidatePath("/");
-  },
-  {
-    validator: $valibot(ToggleWatchMediaSchema),
-  },
-);
+  });
 
 export const deleteAllWatchMedia = async () => {
   return Promise.resolve(DB.destroy());
 };
 
 export const deleteWatchMedia = action.formAction(
+  $valibot(DeleteWatchMediaSchema),
   async ({ input }) => {
     const watchMedia = DB.data.get(input.mediaId);
     const deleted = DB.data.delete(input.mediaId);
@@ -81,11 +76,7 @@ export const deleteWatchMedia = action.formAction(
 
     revalidatePath("/");
     return deleted;
-  },
-  {
-    validator: $valibot(DeleteWatchMediaSchema),
-  },
-);
+  });
 
 async function uploadFile(file: File) {
   const dir = path.join(process.cwd(), "public", "images");
