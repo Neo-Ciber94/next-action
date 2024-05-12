@@ -202,7 +202,7 @@ You can throw any error in your server actions, those errors will be send to the
 
 import { ActionError } from "next-action";
 
-export const deletePost = publicAction(undefined, async ({ input }) => {
+export const deletePost = publicAction(async ({ input }) => {
   throw new ActionError("Failed to delete post");
 });
 ```
@@ -252,10 +252,13 @@ The context will be created each time the server action is called, after that yo
 const schema = z.object({ postId: z.string() });
 
 export const deletePost = action(
-  schema,
   async ({ input, context }) => {
     return context.db.delete(posts).where(eq(input.postId, posts.id));
-  });
+  },
+  {
+    validator: schema,
+  },
+);
 ```
 
 ## Middlewares
@@ -290,8 +293,10 @@ const schema = z.object({
   content: z.string(),
 });
 
-export const createPost = authAction(schema, async ({ input, context }) => {
+export const createPost = authAction(async ({ input, context }) => {
   await db.insert(users).values({ ...input, userId: context.session.userId });
+}, {
+  validator:
 })
 ```
 
