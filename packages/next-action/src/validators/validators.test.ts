@@ -25,10 +25,13 @@ describe("Validate with custom validators", () => {
             bool: true,
             date: new Date(2060, 7, 20)
         })).resolves.toStrictEqual({
-            num: 69,
-            text: "Bitzø",
-            bool: true,
-            date: new Date(2060, 7, 20)
+            success: true,
+            data: {
+                num: 69,
+                text: "Bitzø",
+                bool: true,
+                date: new Date(2060, 7, 20)
+            }
         })
     })
 
@@ -50,10 +53,13 @@ describe("Validate with custom validators", () => {
             bool: true,
             date: new Date(2060, 7, 20)
         })).resolves.toStrictEqual({
-            num: 69,
-            text: "Bitzø",
-            bool: true,
-            date: new Date(2060, 7, 20)
+            success: true,
+            data: {
+                num: 69,
+                text: "Bitzø",
+                bool: true,
+                date: new Date(2060, 7, 20)
+            }
         })
     })
 })
