@@ -1,7 +1,6 @@
 "use server";
 import { action } from "./client";
 import {
-  $valibot,
   CreateWatchMediaSchema,
   DeleteWatchMediaSchema,
   ToggleWatchMediaSchema,
@@ -13,6 +12,7 @@ import { revalidatePath } from "next/cache";
 import { ActionError } from "next-action";
 import sharp from "sharp";
 import { DB } from "./db";
+import $valibot from "next-action/validators/valibot";
 
 export async function getWatchMediaList() {
   return Array.from(DB.data.values()).reverse();

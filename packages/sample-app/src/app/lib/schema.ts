@@ -7,8 +7,6 @@ import {
   instance,
   picklist,
   toTrimmed,
-  parse as valibotParse,
-  type BaseSchema,
   type Output,
 } from "valibot";
 
@@ -34,11 +32,3 @@ export const ToggleWatchMediaSchema = object({
 export type CreateWatchMedia = Output<typeof CreateWatchMediaSchema>;
 
 export type WatchMedia = Omit<CreateWatchMedia, "image"> & { id: string; imageUrl: string };
-
-export function $valibot<S extends BaseSchema>(schema: S) {
-  return {
-    parse(value: unknown) {
-      return valibotParse(schema, value);
-    },
-  };
-}
