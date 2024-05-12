@@ -1,7 +1,7 @@
 {
   "name": "next-action",
   "description": "Provides a mechanism for validate and execute server actions",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",

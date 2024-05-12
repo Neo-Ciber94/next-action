@@ -78,15 +78,12 @@ const schema = z.object({
 });
 
 export const createPost = publicAction(
+  schema,
   async ({ input }) => {
     const postId = crypto.randomUUID();
     await db.insert(posts).values({ postId, ...input });
     return { postId };
-  },
-  {
-    validate: schema,
-  },
-);
+  });
 ```
 
 You can call the `createPost` directly client and server side as any other server action.
@@ -140,17 +137,14 @@ const schema = z.object({
 });
 
 export const updatePost = publicAction.formAction(
+  schema,
   async ({ input }) => {
     await db.update(posts)
       .values({ postId, ...input })
       .where(eq(input.postId, posts.id))
 
     return { postId };
-  },
-  {
-    validate: schema,
-  },
-);
+  });
 ```
 
 `updatePost` will have the form: `(input: FormData) => ActionResult<T>`, so you can use it in any form.
