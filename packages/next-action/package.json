@@ -105,6 +105,26 @@
         "types": "./dist/testing/client.d.ts",
         "default": "./dist/testing/client.js"
       }
+    },
+    "./validators/zod": {
+      "import": {
+        "types": "./dist/validators/zod.d.mts",
+        "default": "./dist/validators/zod.mjs"
+      },
+      "require": {
+        "types": "./dist/validators/zod.d.ts",
+        "default": "./dist/validators/zod.js"
+      }
+    },
+    "./validators/valibot": {
+      "import": {
+        "types": "./dist/validators/valibot.d.mts",
+        "default": "./dist/validators/valibot.mjs"
+      },
+      "require": {
+        "types": "./dist/validators/valibot.d.ts",
+        "default": "./dist/validators/valibot.js"
+      }
     }
   },
   "files": [
