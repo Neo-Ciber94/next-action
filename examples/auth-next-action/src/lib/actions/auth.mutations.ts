@@ -21,6 +21,7 @@ const RegisterUserSchema = z.object({
 });
 
 export const registerUser = publicAction.formAction(
+  RegisterUserSchema,
   async ({ input }) => {
     const userNameAlreadyExists = await prisma.user
       .count({ where: { username: input.username } })
@@ -56,11 +57,7 @@ export const registerUser = publicAction.formAction(
 
     // Redirect to profile
     redirect("/");
-  },
-  {
-    validator: RegisterUserSchema,
-  },
-);
+  });
 
 const UpdateUserSchema = RegisterUserSchema.pick({
   username: true,
@@ -69,6 +66,7 @@ const UpdateUserSchema = RegisterUserSchema.pick({
 });
 
 export const updateUser = authAction.formAction(
+  UpdateUserSchema,
   async ({ input, context: { session } }) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -96,11 +94,7 @@ export const updateUser = authAction.formAction(
 
     revalidatePath("/");
     redirect("/");
-  },
-  {
-    validator: UpdateUserSchema,
-  },
-);
+  });
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -110,6 +104,7 @@ const LoginSchema = z.object({
 const INVALID_CREDENTIALS_ERROR = "Invalid email or password";
 
 export const loginUser = publicAction.formAction(
+  LoginSchema,
   async ({ input }) => {
     const user = await prisma.user.findFirst({ where: { email: input.email } });
 
@@ -129,13 +124,9 @@ export const loginUser = publicAction.formAction(
 
     // Redirect to profile
     redirect("/");
-  },
-  {
-    validator: LoginSchema,
-  },
-);
+  });
 
-export const logoutUser = authAction(async () => {
+export const logoutUser = authAction(undefined, async () => {
   cookies().delete(COOKIE_JWT_TOKEN);
   redirect("/login");
 });
